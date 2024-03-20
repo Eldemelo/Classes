@@ -3,43 +3,45 @@
 #include <sstream>
 #include <bitset>
 
+using namespace std;
+
 // void print_tree(BSTree* tree, int mode);
-void print_tree(BSTree* tree, std::bitset<3> mode);
+void print_tree(BSTree* tree, bitset<3> mode);
 
 // <file_name> <traversal_method>
 int main(int argc, char*argv[]){
-    std::ifstream ifs(argv[1]);
-    // int mode = std::stoi(argv[2]);
-    std::bitset<3> mode(*argv[2]);
+    ifstream ifs(argv[1]);
+    // int mode = stoi(argv[2]);
+    bitset<3> mode(*argv[2]);
 
     BSTree* tree = new BSTree();
 
-    std::string line;
+    string line;
 
     // Get the numbers to be inserted
-    std::getline(ifs, line);
-    std::stringstream ss(line);
+    getline(ifs, line);
+    stringstream ss(line);
 
     int num;
     // Insert the numbers
     while(ss >> num){
         tree->insert(num);
         print_tree(tree, mode);
-        std::cout << "Height: " << tree->height() << std::endl;
+        cout << "Height: " << tree->height() << endl;
     }
 
     // Get the numbers to be searched
-    std::getline(ifs, line);
+    getline(ifs, line);
     ss.clear();
     ss.str(line);
 
     // Search for the numbers
     while(ss >> num){
-        std:: cout << tree->search(num) << std::endl;
+         cout << tree->search(num) << endl;
     }
 
     // Get the numbers to be removed
-    std::getline(ifs, line);
+    getline(ifs, line);
     ss.clear();
     ss.str(line);
 
@@ -47,12 +49,12 @@ int main(int argc, char*argv[]){
     while(ss >> num){
         tree->remove(num);
         print_tree(tree, mode);
-        std::cout << "Height: " << tree->height() << std::endl;
+        cout << "Height: " << tree->height() << endl;
     }
 
     // Destroy the tree
     tree->destroy();
-    std::cout << "Height: " << tree->height() << std::endl;
+    cout << "Height: " << tree->height() << endl;
 }
 
 /*
@@ -78,7 +80,7 @@ int main(int argc, char*argv[]){
 // }
 
 // New, exciting way of interpreting the bitstring!
-void print_tree(BSTree* tree, std::bitset<3> mode){
+void print_tree(BSTree* tree, bitset<3> mode){
     if(mode[0]){
         tree->preorder();
     }
