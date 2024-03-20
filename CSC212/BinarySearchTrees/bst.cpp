@@ -1,3 +1,4 @@
+//TODO Finish writing insert private method
 #include "bst.h"
 
 BSTree::BSTree(){
@@ -19,19 +20,46 @@ void BSTree::destroy(){
     destroyRec(this->root);
 }
 
-void BSTree::insert(int value){
-
+// Private
+BSTNode* BSTree::insert(int value, BSTNode* current){
+    // Base case
+    if (current == nullptr){
+        current = new BSTNode(value);
+    }
+    else if(current->left == nullptr && ){}
 }
 
+// Public
 void BSTree::insert(int value){
-
+    // If the tree is empty
+    if (this->root == nullptr){
+        this->root = new BSTNode(value);
+        return;
+    }
+    // If tree is not empty: recursively navigate through tree
+    insert(value, this->root);
 }
+
 void BSTree::remove(int value){
 
 }
+
 bool BSTree::search(int value){
+    return false;
+}
+
+int BSTree::height(){
+    return -1;
+}
+
+void BSTree::preorder(){
 
 }
-int BSTree::height(){
-    
+
+void BSTree::inorder(){
+
+}
+
+void BSTree::postorder(){
+
 }
