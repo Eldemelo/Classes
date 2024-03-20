@@ -1,5 +1,6 @@
 #include "bst.h"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <bitset>
 

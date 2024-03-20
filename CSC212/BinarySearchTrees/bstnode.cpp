@@ -8,3 +8,7 @@ BSTNode::BSTNode(){
 BSTNode::BSTNode(int value){
     this->value = value;
 }
+
+BSTNode::~BSTNode(){
+    // Keep empty!
+}
