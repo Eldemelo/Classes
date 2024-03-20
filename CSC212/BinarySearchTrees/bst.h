@@ -1,0 +1,7 @@
+class BSTree{
+    private:
+
+    public:
+
+
+};
