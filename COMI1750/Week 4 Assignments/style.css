@@ -1,0 +1,118 @@
+/* Ethan DeMelo | 24 July, 2023
+*/
+
+/* Formatting for the main header of the page
+*/
+body
+{
+    background-color:lightcyan;
+}
+
+section
+{
+    background-color:aliceblue;
+}
+
+.titleStyle
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: xx-large;
+}
+
+.titleStyle i
+{
+    color: orangered;
+}
+
+
+
+/* All formatting for the first secion of the ClassesAndImages file*/
+.sectionOne
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sectionOne img
+{
+    max-width: 100%;
+    height:    auto;
+}
+
+.sectionOne h2
+{
+    color: orangered;
+    font-weight: 600;
+}
+
+.sectionOne a:hover
+{
+    color: orange;
+}
+
+
+
+/* All formatting for the second section
+*/
+.sectionTwo
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sectionTwo h2
+{
+    font-weight: 600;
+    color: orangered;
+}
+
+.sectionTwo img
+{
+    max-width: 500px;
+    height: auto;
+}
+
+
+/* All formatting for the third section*/
+.sectionThree
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sectionThree h2
+{
+    font-weight: 600;
+    color: orangered;
+}
+
+.sectionThree img
+{
+    max-width: 600px;
+    height: auto;
+}
+
+
+/* Section 4 formatting
+*/
+.sectionFour
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sectionFour h2
+{
+    font-weight: 600;
+    color: orangered;
+}
+
+
+
+/* Default formatting for anchors
+*/
+a
+{
+    color: orangered;
+}
+
+a:visited
+{
+    color: orangered;
+}

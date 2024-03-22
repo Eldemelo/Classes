@@ -1,0 +1,47 @@
+/* Ethan DeMelo | 30 July, 2023
+*/
+.rightblock
+{
+    height: 200px;
+    width: 200px;
+    outline-color: orange;
+    float:right;
+    margin:25px;
+}
+
+.bottomblock
+{
+    height:50px;
+    width:auto;
+    background-color: rgb(200,2002,200);
+}
+
+.red
+{
+    background-color:rgb(255,180,180);
+    outline: rgb(200,0,0);
+}
+
+.green
+{
+    background-color:rgb(180,255,180);
+    outline: rgb(0,200,0);
+}
+
+.blue
+{
+    background-color:rgb(180,180,255);
+    outline: rgb(0,0,200);
+}
+
+.yellow
+{
+    background-color: rgb(255,255,100);
+}
+
+.block
+{
+    float:left;
+    text-align: center;
+    font-size: 2em;
+}

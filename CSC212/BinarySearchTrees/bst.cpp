@@ -24,9 +24,8 @@ void BSTree::destroy(){
 BSTNode* BSTree::insert(int value, BSTNode* current){
     // Base case
     if (current == nullptr){
-        current = new BSTNode(value);
+        return new BSTNode(value);
     }
-    else if(current->left == nullptr && ){}
 }
 
 // Public
@@ -37,7 +36,7 @@ void BSTree::insert(int value){
         return;
     }
     // If tree is not empty: recursively navigate through tree
-    insert(value, this->root);
+    BSTNode* current = this->root;
 }
 
 void BSTree::remove(int value){

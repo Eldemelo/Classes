@@ -1,0 +1,88 @@
+/*
+Ethan DeMelo
+20 July, 2023
+*/
+
+h1
+{
+    /*
+    Changes the color of the H1 element
+    */
+    color:rgb(20,80,100);
+}
+
+h2
+{
+    /*
+    Sets the font to purple, and 30 pixels. Also changes font for H2
+    */
+    color:rgb(195, 105, 255);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 30px;
+}
+
+p
+{
+    /*
+    Sets font and color for the paragraph
+    */
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:rgb(61, 112, 207);
+}
+
+b
+{
+    /*
+    Sets the font to blue and changes the size to 1.15 the default font size
+    */
+    color:blue;
+    font-size: 1.15em;
+}
+
+i
+{
+    /*
+    Sets the italic to a darker shade of blue
+    */
+    color:rgb(3, 59, 163);
+}
+
+section
+{
+    /*
+    Sets the background of all sections to azure
+    */
+    background-color: azure;
+}
+
+article
+{
+    /*
+    Sets the background color of articles to a darker blue
+    */
+    background-color: rgba(165, 255, 255, 0.488);
+}
+
+aside
+{
+    /*
+    Sets the aside element background color to azure
+    */
+    background-color: azure;
+}
+
+body
+{
+    /*
+    Sets the font weight to 400 for the body
+    */
+    font-weight: 400;
+}
+
+a
+{
+    /*
+    Changes the anchor text color (hyperlinks)
+    */
+    color:darkolivegreen;
+}
