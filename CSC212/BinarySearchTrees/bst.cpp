@@ -1,5 +1,8 @@
 //TODO Finish writing insert private method
 #include "bst.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
 BSTree::BSTree(){
 }
@@ -9,11 +12,19 @@ BSTree::BSTree(int value){
 }
 
 void BSTree::destroyRec(BSTNode* current){
-    if(current != nullptr){
-        destroyRec(current->left);
-        destroyRec(current->right);
+    // Base case if currently on last node of branch
+    if(current->left == nullptr && current->right == nullptr){
         delete current;
     }
+    // If there is a left node, move to that node
+    else if(current->left != nullptr){
+        destroyRec(current->left);
+    }
+    // If there is a right node, move to that node
+    else if(current->right != nullptr){
+        destroyRec(current->right);
+    }
+    return;
 }
 
 void BSTree::destroy(){
@@ -36,7 +47,7 @@ void BSTree::insert(int value){
         return;
     }
     // If tree is not empty: recursively navigate through tree
-    BSTNode* current = this->root;
+    //BSTNode* current = this->root;
 }
 
 void BSTree::remove(int value){
