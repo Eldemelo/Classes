@@ -5,6 +5,7 @@
 using namespace std;
 
 BSTree::BSTree(){
+    this->root = nullptr;
 }
 
 BSTree::BSTree(int value){
@@ -42,10 +43,10 @@ BSTNode* BSTree::insert(int value, BSTNode* current){
 // Public
 void BSTree::insert(int value){
     // If the tree is empty
-    if (this->root == nullptr){
-        this->root = new BSTNode(value);
-        return;
-    }
+    // if (this->root == nullptr){
+    //     this->root = new BSTNode(value);
+    //     return;
+    // }
     // If tree is not empty: recursively navigate through tree
     //BSTNode* current = this->root;
 }
@@ -58,8 +59,37 @@ bool BSTree::search(int value){
     return false;
 }
 
+int BSTree::height(BSTNode* current, int currHeight = 0){
+    // base case
+    cout << currHeight << endl;
+    if(current->left == nullptr && current->right == nullptr){
+        cout << "Bottom" << endl;
+        return currHeight;
+    }
+    int right = 0;
+    int left = 0;
+    if(current->left != nullptr){
+        cout << "down left" << endl;
+        left = height(current->left, currHeight + 1); 
+    }
+    if(current->right != nullptr){
+        cout << "down right" << endl;
+        right = height(current->right, currHeight + 1);
+    }
+    if(left > right){
+        return left;
+    }
+    return right;
+}
+
 int BSTree::height(){
-    return -1;
+    // If there is no root ; There is no layers
+    if(this->root == nullptr){
+        return -1;
+    }
+    else{
+        return height(this->root);
+    }
 }
 
 void BSTree::preorder(){

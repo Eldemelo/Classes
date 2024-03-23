@@ -8,6 +8,7 @@ class BSTree{
         BSTNode* root;
         void destroyRec(BSTNode* current);
         BSTNode* insert(int value, BSTNode* current);
+        int height(BSTNode* current, int height);
     public:
         BSTree();
         BSTree(int value);
