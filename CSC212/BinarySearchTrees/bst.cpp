@@ -34,21 +34,51 @@ void BSTree::destroy(){
 
 // Private
 BSTNode* BSTree::insert(int value, BSTNode* current){
-    // Base case
-    if (current == nullptr){
-        return new BSTNode(value);
+    // Base case; has no more branches to navigate
+    if (current->left == nullptr && current->right == nullptr){
+        // If the value to insert is larger
+        if (value > current->value){
+            current->right = new BSTNode(value);
+        }
+        else{
+            current->left = new BSTNode(value);
+        }
+    }
+    // If the value is smaller than current
+    if(value < current->value){
+        // If there is no left branch
+        if(current->left == nullptr){
+            current->left = new BSTNode(value);
+        }
+        // If the left branch exists, navigate to it
+        else{
+            return insert(value, current->left);
+        }
+    }
+    // If the value is larger than current
+    else if(value > current->value){
+        // If there is no right branch
+        if(current->right == nullptr){
+            current->right = new BSTNode(value);
+        }
+        // Navigate to branch
+        else{
+            return insert(value, current->right);
+        }
     }
 }
 
 // Public
 void BSTree::insert(int value){
     // If the tree is empty
-    // if (this->root == nullptr){
-    //     this->root = new BSTNode(value);
-    //     return;
-    // }
-    // If tree is not empty: recursively navigate through tree
-    //BSTNode* current = this->root;
+    if (this->root == nullptr){
+        this->root = new BSTNode(value);
+        return;
+    }
+    else{
+        insert(value, this->root);
+    }
+    return;
 }
 
 void BSTree::remove(int value){
@@ -61,24 +91,24 @@ bool BSTree::search(int value){
 
 int BSTree::height(BSTNode* current, int currHeight = 0){
     // base case
-    cout << currHeight << endl;
     if(current->left == nullptr && current->right == nullptr){
-        cout << "Bottom" << endl;
         return currHeight;
     }
     int right = 0;
     int left = 0;
+    // If there is a left branch
     if(current->left != nullptr){
-        cout << "down left" << endl;
         left = height(current->left, currHeight + 1); 
     }
+    // If there is a right branch
     if(current->right != nullptr){
-        cout << "down right" << endl;
         right = height(current->right, currHeight + 1);
     }
+    // If the left branch has a higher height, return left
     if(left > right){
         return left;
     }
+    // Return right
     return right;
 }
 
