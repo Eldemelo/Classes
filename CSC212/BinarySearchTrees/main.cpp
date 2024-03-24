@@ -25,7 +25,6 @@ int main(int argc, char*argv[]){
 
     int num;
     // Insert the numbers
-    cout << "INSERT" << endl;
     while(ss >> num){
         tree->insert(num);
         print_tree(tree, mode);
@@ -38,7 +37,6 @@ int main(int argc, char*argv[]){
     ss.str(line);
 
     // Search for the numbers
-    cout << "SEARCH: " << endl;
     while(ss >> num){
          cout << tree->search(num) << endl;
     }
@@ -49,7 +47,6 @@ int main(int argc, char*argv[]){
     ss.str(line);
 
     // Remove the numbers
-    cout << "REMOVE: " << endl;
     while(ss >> num){
         tree->remove(num);
         print_tree(tree, mode);
@@ -57,7 +54,6 @@ int main(int argc, char*argv[]){
     }
 
     // Destroy the tree
-    cout << "Destroy: " << endl;
     tree->destroy();
     cout << "Height: " << tree->height() << endl;
 }
