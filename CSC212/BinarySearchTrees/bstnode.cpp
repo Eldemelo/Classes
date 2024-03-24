@@ -7,6 +7,8 @@ BSTNode::BSTNode(){
 
 BSTNode::BSTNode(int value){
     this->value = value;
+    this->left = nullptr;
+    this->right = nullptr;
 }
 
 BSTNode::~BSTNode(){

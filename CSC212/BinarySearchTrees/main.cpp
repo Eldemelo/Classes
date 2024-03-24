@@ -27,7 +27,7 @@ int main(int argc, char*argv[]){
     // Insert the numbers
     while(ss >> num){
         tree->insert(num);
-        print_tree(tree, mode);
+        //print_tree(tree, mode);
         cout << "Height: " << tree->height() << endl;
     }
 
@@ -49,7 +49,7 @@ int main(int argc, char*argv[]){
     // Remove the numbers
     while(ss >> num){
         tree->remove(num);
-        print_tree(tree, mode);
+        //print_tree(tree, mode);
         cout << "Height: " << tree->height() << endl;
     }
 

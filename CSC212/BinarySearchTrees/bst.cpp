@@ -6,7 +6,6 @@ using namespace std;
 
 BSTree::BSTree(){
     this->root = nullptr;
-    cout << 'hi';
 }
 
 BSTree::BSTree(int value){
@@ -72,14 +71,14 @@ bool BSTree::search(int value){
     return false;
 }
 
-int BSTree::height(BSTNode* current, int currHeight = 0){
+int BSTree::height(BSTNode* current, int currHeight = -1){
     // base case
     if(current == nullptr){
         return currHeight;
     }
-    int left = height(current->left, currHeight + 1);
     int right = height(current->right, currHeight + 1);
-
+    int left = height(current->left, currHeight + 1); 
+    // Return the maximum of left and right
     if(left > right){
         return left;
     }
@@ -87,13 +86,7 @@ int BSTree::height(BSTNode* current, int currHeight = 0){
 }
 
 int BSTree::height(){
-    // If there is no root ; There is no layers
-    if(this->root == nullptr){
-        return -1;
-    }
-    else{
-        return height(this->root);
-    }
+    return height(this->root);
 }
 
 void BSTree::preorder(){
