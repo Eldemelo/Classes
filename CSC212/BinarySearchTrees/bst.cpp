@@ -14,18 +14,17 @@ BSTree::BSTree(int value){
 
 void BSTree::destroyRec(BSTNode* current){
     // Base case if currently on last node of branch
-    if(current->left == nullptr && current->right == nullptr){
+    if(current != nullptr){
+        if(current->left != nullptr){
+            destroyRec(current->left);
+            current->left = nullptr;
+        }
+        if(current->right != nullptr){
+            destroyRec(current->right);
+            current->right = nullptr;
+        }
         delete current;
     }
-    // If there is a left node, move to that node
-    else if(current->left != nullptr){
-        destroyRec(current->left);
-    }
-    // If there is a right node, move to that node
-    else if(current->right != nullptr){
-        destroyRec(current->right);
-    }
-    return;
 }
 
 void BSTree::destroy(){
@@ -63,12 +62,66 @@ void BSTree::insert(int value){
     return;
 }
 
-void BSTree::remove(int value){
-
+void BSTree::remove(BSTNode* current, int value){
+    // Base case
+    if(current == nullptr){
+        return;
+    }
+    // If the current node matches the value to be removed
+    if(current->value == value){
+        // If there are no branches
+        if(current->left == nullptr && current->right == nullptr && current->value == value){
+            delete current;
+        }
+        // If there is a right node
+        else if(current->right != nullptr){
+            // Find the smallest number on the right side
+            BSTNode* temp = current->right;
+            while(temp->left != nullptr){
+                temp = temp->left;
+            }
+            // Set the current node's value to the smallest value on the right
+            current->value = temp->value;
+            delete temp;
+        }
+        // If there is no right node
+        else{
+            BSTNode* toDelete = current;
+            BSTNode* temp = current->left;
+            delete toDelete;
+            current = temp;
+        }
+    }
 }
 
-bool BSTree::search(int value){
+void BSTree::remove(int value){
+    remove(this->root, value);
+}
+
+// Private
+bool BSTree::search(BSTNode* current, int value){
+    bool left, right;
+    // Base case ; If the current node does not exist
+    if(current == nullptr){
+        return false;
+    }
+    else if(current->value == value){
+        return true;
+    }
+    left = search(current->left, value);
+    right = search(current->right, value);
+    if(left == true || right == true){
+        return true;
+    }
     return false;
+}
+
+// Public
+bool BSTree::search(int value){
+    if(this->root == nullptr){
+        return false;
+    }
+    return search(this->root, value);
 }
 
 int BSTree::height(BSTNode* current, int currHeight = -1){

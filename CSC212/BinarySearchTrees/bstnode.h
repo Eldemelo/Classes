@@ -13,6 +13,4 @@ class BSTNode{
         BSTNode();
         ~BSTNode();
         BSTNode(int value);
-        void setLeftNode(BSTNode* left);
-        void setRightNode(BSTNode* right);
 };

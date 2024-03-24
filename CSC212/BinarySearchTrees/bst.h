@@ -9,6 +9,8 @@ class BSTree{
         void destroyRec(BSTNode* current);
         BSTNode* insert(int value, BSTNode* current);
         int height(BSTNode* current, int height);
+        bool search(BSTNode* current, int value);
+        void remove(BSTNode* current, int value);
     public:
         BSTree();
         BSTree(int value);
