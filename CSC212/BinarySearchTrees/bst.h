@@ -12,7 +12,7 @@ class BSTree{
         BSTNode* root;
         void destroyRec(BSTNode* current);
         BSTNode* insert(int value, BSTNode* current);
-        int height(BSTNode* current, int height);
+        int height(BSTNode* current);
         bool search(BSTNode* current, int value);
         BSTNode* remove(BSTNode* current, int value);
         void preorder(BSTNode* current, ostream&);

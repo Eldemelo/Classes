@@ -9,44 +9,42 @@ BSTree::BSTree(){
 }
 
 BSTree::BSTree(int value){
-    this->root = new BSTNode(value);
+    this->root->value = value;
+    this->root->left = nullptr;
+    this->root->right = nullptr;
 }
 
 void BSTree::destroyRec(BSTNode* current){
-    // Base case if currently on last node of branch
-    if(current != nullptr){
-        if(current->left != nullptr){
-            destroyRec(current->left);
-            current->left = nullptr;
-        }
-        if(current->right != nullptr){
-            destroyRec(current->right);
-            current->right = nullptr;
-        }
-        delete current;
+    if(current == nullptr){
+        return;
     }
+    destroyRec(current->left);
+    destroyRec(current->right);
+    delete current;
 }
 
 void BSTree::destroy(){
     destroyRec(this->root);
+    this->root = nullptr;
+    return;
 }
 
 // Private
 BSTNode* BSTree::insert(int value, BSTNode* current){
-    // Base case; has no more branches to navigate
-    if (current == nullptr){
-        return new BSTNode(value);
+    if (value > current->value){
+        if(current->right == nullptr){
+            current->right = new BSTNode(value);
+            return current->right;
+        }
+        return insert(value, current->right);
     }
-    // If the value is smaller than current
-    else if(value < current->value){
-        current->left = insert(value, current->left);
+    else{
+        if(current->left == nullptr){
+            current->left = new BSTNode(value);
+            return current->left;
+        }
+        return insert(value, current->left);
     }
-    // If the value is larger than current
-    else if(value > current->value){
-        current->right = insert(value, current->right);
-    }
-    // If the value is equal to current, we do nothing
-    return current;
 }
 
 // Public
@@ -63,56 +61,44 @@ void BSTree::insert(int value){
 }
 
 BSTNode* BSTree::remove(BSTNode* current, int value){
-    // Base case - Value not found
     if(current == nullptr){
-        // Return the nullptr
-        return current;
+        return nullptr;
     }
-    // If the value is larger than the current node
-    if(value > current->value){
-        // Move to the right node
-        current->right = remove(current->right, value);
-        return current;
-    }
+    // value is smaller than current node
     else if(value < current->value){
-        // Move to the left node
         current->left = remove(current->left, value);
-        return current;
     }
-    // If there is no left child
-    if(current->left == nullptr){
-        BSTNode* temp = current->right;
-        delete current;
-        return temp;
+    // Value is larger than current node
+    else if(value > current->value){
+        current->right = remove(current->right, value);
     }
-    // If there is no right child
-    else if(current->right == nullptr){
-        BSTNode* temp = current->left;
-        delete current;
-        return temp;
-    }
-    // If we have two children
+    // value matches current node
     else{
-        // Create a pointer to the branch and its leaf
-        BSTNode* branch = this->root;
-        BSTNode* leaf = this->root->right;
-        // Find smallest (child) node to the right
-        while(leaf->left != nullptr){
-            branch = leaf;
-            leaf = leaf->left;
+        BSTNode* temp;
+        // If there is no left branch
+        if(current->left == nullptr){
+            temp = current->right;
+            delete current;
+            return temp;
         }
-        // If the node is not the root node
-        if(branch != root){
-            branch->left = leaf->right;
+        // If there is no right branch
+        else if(current->right == nullptr){
+            temp = current->left;
+            delete current;
+            return temp;
         }
-        // Always assign leaf's "right branch" to the parent branch's left leaf
-        else{
-            branch->right = leaf->right;
+        // Set pointer to right node
+        temp = current->right;
+        // Move pointer as far left as possible
+        while(temp->left != nullptr){
+            temp = temp->left;
         }
-        this->root->value = leaf->value;
-        delete leaf;
-        return root;
+        // Set current node's value = to new pointer value
+        current->value = temp->value;
+        // Set current right's pointer to 
+        current->right = remove(current->right, temp->value);
     }
+    return current;
 }
 
 void BSTree::remove(int value){
@@ -145,18 +131,15 @@ bool BSTree::search(int value){
     return search(this->root, value);
 }
 
-int BSTree::height(BSTNode* current, int currHeight = -1){
+int BSTree::height(BSTNode* current){
     // base case
     if(current == nullptr){
-        return currHeight;
+        return -1;
     }
-    int right = height(current->right, currHeight + 1);
-    int left = height(current->left, currHeight + 1); 
+    int right = height(current->right);
+    int left = height(current->left); 
     // Return the maximum of left and right
-    if(left > right){
-        return left;
-    }
-    return right;
+    return(left > right ? left + 1 : right + 1);
 }
 
 int BSTree::height(){
@@ -170,7 +153,7 @@ void BSTree::preorder(BSTNode* current, ostream& os){
         return;
     }
     else{
-        os << current->value;
+        os << to_string(current->value) + " ";
     }
     preorder(current->left, os);
     preorder(current->right, os);
@@ -180,6 +163,8 @@ void BSTree::preorder(BSTNode* current, ostream& os){
 // Public
 void BSTree::preorder(ostream& os){
     preorder(this->root, os);
+    os << endl;
+    return;
 }
 
 void BSTree::inorder(BSTNode* current, ostream& os){
@@ -187,7 +172,7 @@ void BSTree::inorder(BSTNode* current, ostream& os){
     if(current->left != nullptr){
         inorder(current->left, os);
     }
-    os << current->value;
+    os << to_string(current->value) + " ";
     if(current->right != nullptr){
         inorder(current->right, os);
     }
@@ -196,6 +181,8 @@ void BSTree::inorder(BSTNode* current, ostream& os){
 }
 void BSTree::inorder(ostream& os){
     inorder(this->root, os);
+    os << endl;
+    return;
 }
 
 void BSTree::postorder(BSTNode* current, ostream& os){
@@ -205,10 +192,12 @@ void BSTree::postorder(BSTNode* current, ostream& os){
     }
     postorder(current->left, os);
     postorder(current->right, os);
-    os << current->value;
+    os << to_string(current->value) + " ";
     return;
 }
 
 void BSTree::postorder(ostream& os){
     postorder(this->root, os);
+    os << endl;
+    return;
 }
