@@ -163,14 +163,52 @@ int BSTree::height(){
     return height(this->root);
 }
 
-void BSTree::preorder(){
-
+// Private
+void BSTree::preorder(BSTNode* current, ostream& os){
+    // Base case
+    if(current == nullptr){
+        return;
+    }
+    else{
+        os << current->value;
+    }
+    preorder(current->left, os);
+    preorder(current->right, os);
+    return;
 }
 
-void BSTree::inorder(){
-
+// Public
+void BSTree::preorder(ostream& os){
+    preorder(this->root, os);
 }
 
-void BSTree::postorder(){
+void BSTree::inorder(BSTNode* current, ostream& os){
+    // First check if there is a node to the left
+    if(current->left != nullptr){
+        inorder(current->left, os);
+    }
+    os << current->value;
+    if(current->right != nullptr){
+        inorder(current->right, os);
+    }
+    return;
 
+}
+void BSTree::inorder(ostream& os){
+    inorder(this->root, os);
+}
+
+void BSTree::postorder(BSTNode* current, ostream& os){
+    // Base case
+    if(current == nullptr){
+        return;
+    }
+    postorder(current->left, os);
+    postorder(current->right, os);
+    os << current->value;
+    return;
+}
+
+void BSTree::postorder(ostream& os){
+    postorder(this->root, os);
 }
