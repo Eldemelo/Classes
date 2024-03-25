@@ -62,35 +62,56 @@ void BSTree::insert(int value){
     return;
 }
 
-void BSTree::remove(BSTNode* current, int value){
-    // Base case
+BSTNode* BSTree::remove(BSTNode* current, int value){
+    // Base case - Value not found
     if(current == nullptr){
-        return;
+        // Return the nullptr
+        return current;
     }
-    // If the current node matches the value to be removed
-    if(current->value == value){
-        // If there are no branches
-        if(current->left == nullptr && current->right == nullptr && current->value == value){
-            delete current;
+    // If the value is larger than the current node
+    if(value > current->value){
+        // Move to the right node
+        current->right = remove(current->right, value);
+        return current;
+    }
+    else if(value < current->value){
+        // Move to the left node
+        current->left = remove(current->left, value);
+        return current;
+    }
+    // If there is no left child
+    if(current->left == nullptr){
+        BSTNode* temp = current->right;
+        delete current;
+        return temp;
+    }
+    // If there is no right child
+    else if(current->right == nullptr){
+        BSTNode* temp = current->left;
+        delete current;
+        return temp;
+    }
+    // If we have two children
+    else{
+        // Create a pointer to the branch and its leaf
+        BSTNode* branch = this->root;
+        BSTNode* leaf = this->root->right;
+        // Find smallest (child) node to the right
+        while(leaf->left != nullptr){
+            branch = leaf;
+            leaf = leaf->left;
         }
-        // If there is a right node
-        else if(current->right != nullptr){
-            // Find the smallest number on the right side
-            BSTNode* temp = current->right;
-            while(temp->left != nullptr){
-                temp = temp->left;
-            }
-            // Set the current node's value to the smallest value on the right
-            current->value = temp->value;
-            delete temp;
+        // If the node is not the root node
+        if(branch != root){
+            branch->left = leaf->right;
         }
-        // If there is no right node
+        // Always assign leaf's "right branch" to the parent branch's left leaf
         else{
-            BSTNode* toDelete = current;
-            BSTNode* temp = current->left;
-            delete toDelete;
-            current = temp;
+            branch->right = leaf->right;
         }
+        this->root->value = leaf->value;
+        delete leaf;
+        return root;
     }
 }
 
