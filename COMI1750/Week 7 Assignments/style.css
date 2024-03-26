@@ -1,0 +1,147 @@
+/*
+Ethan DeMelo | 9 August, 2023
+*/
+
+/*
+Formatting for table 1:
+*/
+.t1 table {
+	border-collapse: collapse;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.t1 table td {
+	padding: 15px;
+}
+.t1 thead tr{
+	background-color: #1d1d1d;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 13px;
+	border: 1px solid #fbfbfb;
+}
+.t1 table tbody td {
+	color: #ffffff;
+	border: 1px solid #dddfe1;
+}
+.t1 tr {
+	background-color: #949494;
+}
+.t1 tfoot tr{
+    background-color: #ffffff;
+}
+
+
+/*
+Styling for table 2
+*/
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+     
+.t2 caption{
+    color:#fb887c;
+    font-size: larger;
+    font-weight: 700;
+}
+
+.t2 h1 {
+            font-family: "proxima-nova",sans-serif;
+            letter-spacing: -0.01em;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 60px;
+            margin-left: -3px;
+            line-height: 1em;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 8px;
+            text-rendering: optimizeLegibility;
+        }
+
+.t2 table {
+            background: #fb887c;
+            color: #fff;
+            font-family: 'Lato', Arial, sans-serif;
+            width: 80%;
+            margin: auto;
+        }
+
+.t2 table, th, td {
+            border: 1px solid #fff;
+            border-collapse: collapse;
+        }
+
+.t2 th, td {
+            padding: 15px;
+        }
+.t2 tfoot{
+    background-color: #ffffff;
+    color: #1d1d1d;
+}
+
+/*
+Formatting for the third table
+*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.t3 body {
+  background: #105469;
+}
+.t3 table {
+  background: #012B39;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  margin: 1em;
+  
+}
+.t3 th {
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+.t3 td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+.t3 .disabled td {
+  color: #4F5F64;
+}
+.t3 tbody tr {
+  transition: background 0.25s ease;
+}
+.t3 tbody tr:hover {
+  background: #014055;
+}
+
+
+/*
+Table 4 styling CSS
+*/
+
+.t4{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.t4 table{
+    background-color: black;
+    border-radius:2em;
+    border-collapse: collapse;
+    padding: 1em;
+}
+
+.t4 th{
+    color:#E2B842
+}
+
+.t4 td, tr{
+    color: #dddfe1;
+}

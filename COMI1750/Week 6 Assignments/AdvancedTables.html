@@ -1,0 +1,63 @@
+<!-- Ethan DeMelo | 4 August, 2023-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Advanced Tables</title>
+    </head>
+    <body>
+        <table border="1">
+            <caption>Table D - 1.1<br>
+            Aluminum Hydraulic Shoring<br>
+            Vertical Shores<br>
+            For Soil Type A</caption>
+            <!-- I chose a rowspan of 3 as it needs to span over 3 rows downward-->
+            <!-- I chose a colspan of 5, as the top header needs to span across the last 5 columns-->
+            <tr>
+                <th rowspan="3">Depth of trench (Feet)</th>
+                <th colspan="5">Hydraulix Cylinders</th>
+            </tr>
+            <!-- I chose a rowspan of 2 to span 2 rows down, in order to allow me to add a sub-header for the Width of trench-->
+            <!-- I chose a colspan of 3 as the sub-header needs to span across the last 3 columns-->
+            <tr>
+                <th rowspan="2">Maximum horizontal spacing (feet)</th>
+                <th rowspan="2">Maximum vertical spacing (feet)</th>
+                <th colspan="3">Width of trench(feet)</th>
+            </tr>
+            <tr>
+                <th>Up to 8</th>
+                <th>Over 8 up to 12</th>
+                <th>Over 12 up to 15</th>
+            </tr>
+            <!--I chose a rowspan of 3 as the three columns need to span downwards across all 3 rows "over number up to number"-->
+            <tr>
+                <th>Over 5 up to 10</th>
+                <td>8</td>
+                <td rowspan="3">4</td>
+                <td rowspan="3">2 Inch Diameter</td>
+                <td rowspan="3">2 Inch Diameter Note (2)</td>
+                <td rowspan="3">3 Inch Diameter</td>
+            </tr>
+            <tr>
+                <th>Over 10 up to 15</th>
+                <td>8</td>
+            </tr>
+            <tr>
+                <th>Over 10 up to 15</th>
+                <td>7</td>
+            </tr>
+            <!-- I chose a colspan of 5 as the final row spans across all 5 columns-->
+            <tr>
+                <th>Over 20</th>
+                <td colspan="5">Note (1)</td>
+            </tr>
+            
+            <tfoot>
+                <tr>
+                    <td colspan="6">Footnotes to tables, and general notes on hydraulic shoring, are found in Appendix D, Item (g)<br>
+            Note(1): See Appendix D, Item (g) (1)<br>
+            Note(2): See Appendix D, Item (g) (2)</td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>

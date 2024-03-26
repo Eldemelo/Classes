@@ -1,0 +1,115 @@
+/* Ethan DeMelo | 30 July, 2023
+*/
+body
+{
+	font-family: Georgia, serif;
+	font-size:16px;
+	background-color: rgb(0,128,0);
+}
+
+header 
+{
+	font-size: 40px;
+	font-family: Georgia, serif;
+	text-align: center;
+}
+
+h2
+{
+	margin: 11px 0;
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-bottom: 1px solid rgb(128,128,128);
+}
+
+
+
+.wrapper{
+	background-color: rgb(255,255,255);
+	width: auto;
+	padding: 25 px;
+	min-height:100%;
+}
+
+/* For navigation list */
+
+.nav{
+	border-top: 1px solid rgb(0,128,0);
+	border-bottom: 1px solid rgb(0,128,0);
+	margin-bottom: 22px;
+}
+.nav li
+{
+	display: inline-block;
+	padding: 10px;
+
+}
+.nav li a
+{
+    font-family: Arial, sans-serif;
+    font-weight:bold;
+    color: rgb(0,128,0);
+    text-transform:uppercase;
+    text-decoration:none;
+}
+
+
+/* Columns and paras down here */
+
+p{
+	margin: 11px 0;
+}
+
+
+.main, .side, .col2, .col4{
+	padding: 10px;
+	line-height: 22px;
+}
+
+.col3 p, .side p, .col2 p, .col4 p{
+	color:#707070;
+}
+
+.col3{
+	columns: 3;
+	-moz-columns: 3;
+	-webkit-columns: 3;
+
+	gap: 30px;
+	-moz-gap: 30px;
+	-webkit-gap: 30px;
+
+	column-rule: 1px dotted gray;
+	-moz-column-rule: 1px dotted gray;
+	-webkit-column-rule: 1px dotted gray;
+}
+.col2{
+	columns: 2;
+	-moz-columns: 2;
+	-webkit-columns: 2;
+
+	gap: 30px;
+	-moz-gap: 30px;
+	-webkit-gap: 30px;
+
+	column-rule: 1px dotted darkgreen;
+	-moz-column-rule: 1px dotted darkgreen;
+	-webkit-column-rule: 1px dotted darkgreen;
+}
+.col2 h2{
+	column-span: all;
+}
+.col4{
+	columns: 4;
+	-moz-columns: 4;
+	-webkit-columns: 4;
+
+	gap: 25px;
+	-moz-gap: 25px;
+	-webkit-gap: 25px;
+
+	column-rule: 1px dotted red;
+	-moz-column-rule: 1px dotted red;
+	-webkit-column-rule: 1px dotted red;
+}
