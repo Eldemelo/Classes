@@ -4,13 +4,19 @@
  * Node Class Functions
 */
 
-RBTNode::RBTNode(int data){
+LLRBTNode::LLRBTNode(){
+    this->data = 0;
+    this->left = nullptr;
+    this->right = nullptr;
+}
+
+LLRBTNode::LLRBTNode(int data){
     this->data = data;
     this->left = nullptr;
     this->right = nullptr;
 }
 
-RBTNode::~RBTNode(){
+LLRBTNode::~LLRBTNode(){
 
 }
 
@@ -22,9 +28,19 @@ RBTNode::~RBTNode(){
  * Private Functions
 */
 
-RBTNode* RBTree::insert(int data, RBTNode* root){
+int LLRBTree::subHeight(LLRBTNode* root){
     if(!root){
-        return new RBTNode(data);
+        return -1;
+    }
+    int left = height(root->left);
+    int right = height(root->right);
+
+    return (left > right ? left + 1 : right + 1);
+}
+
+LLRBTNode* LLRBTree::insert(int data, LLRBTNode* root){
+    if(!root){
+        return new LLRBTNode(data);
     }
 
     // Go left if data < data at this Node
@@ -34,18 +50,25 @@ RBTNode* RBTree::insert(int data, RBTNode* root){
     }else{
         root->right = insert(data, root->right);
     }
-    
+    // Method call to check if tree is balanced
+    int leftHeight = subHeight(root->left);
+    int rightHeight = subHeight(root->right);
+
+    if(leftHeight - rightHeight > 1 || leftHeight - rightHeight < -1){
+        // Call balance method
+    }
+
     return root;
 }
 
-RBTNode* RBTree::remove(int data, RBTNode* root){
+LLRBTNode* LLRBTree::remove(int data, LLRBTNode* root){
     if(!root){
         return nullptr;
     }
 
     // We found what we're looking for, delete it.
     if(data == root->data){
-        RBTNode* temp;
+        LLRBTNode* temp;
         // This is a leaf node
         if(root->left == root->right){
             delete root;
@@ -85,12 +108,12 @@ RBTNode* RBTree::remove(int data, RBTNode* root){
     return root;
 }
 
-RBTNode* RBTree::find_ios(RBTNode* root, bool& disconnect){
+LLRBTNode* LLRBTree::find_ios(LLRBTNode* root, bool& disconnect){
     if(!root->left){
         disconnect = true;
         return root;
     }
-    RBTNode* temp = find_ios(root->left, disconnect);
+    LLRBTNode* temp = find_ios(root->left, disconnect);
 
     if(disconnect){
         root->left = nullptr;
@@ -100,7 +123,7 @@ RBTNode* RBTree::find_ios(RBTNode* root, bool& disconnect){
     return temp;
 }
 
-int RBTree::height(RBTNode* root){
+int LLRBTree::height(LLRBTNode* root){
     if(!root){
         return -1;
     }
@@ -110,7 +133,7 @@ int RBTree::height(RBTNode* root){
     return (left > right ? left + 1 : right + 1);
 }
 
-void RBTree::preorder(RBTNode* root, std::ostream& os){
+void LLRBTree::preorder(LLRBTNode* root, std::ostream& os){
     if(!root){
         return;
     }
@@ -122,7 +145,7 @@ void RBTree::preorder(RBTNode* root, std::ostream& os){
     return;
 }
 
-void RBTree::inorder(RBTNode* root, std::ostream& os){
+void LLRBTree::inorder(LLRBTNode* root, std::ostream& os){
     if(!root){
         return;
     }
@@ -134,7 +157,7 @@ void RBTree::inorder(RBTNode* root, std::ostream& os){
     return;
 }
 
-void RBTree::postorder(RBTNode* root, std::ostream& os){
+void LLRBTree::postorder(LLRBTNode* root, std::ostream& os){
     if(!root){
         return;
     }
@@ -146,7 +169,7 @@ void RBTree::postorder(RBTNode* root, std::ostream& os){
     return;
 }
 
-void RBTree::destroy(RBTNode* root){
+void LLRBTree::destroy(LLRBTNode* root){
     if(!root){
         return;
     }
@@ -157,7 +180,7 @@ void RBTree::destroy(RBTNode* root){
     delete root->right;
 }
 
-bool RBTree::search(int data, RBTNode* root){
+bool LLRBTree::search(int data, LLRBTNode* root){
     if(!root){
         return false;
     }
@@ -177,41 +200,41 @@ bool RBTree::search(int data, RBTNode* root){
  * Public Functions
 */
 
-RBTree::RBTree(){
+LLRBTree::LLRBTree(){
     this->_root = nullptr;
 }
 
-RBTree::~RBTree(){
+LLRBTree::~LLRBTree(){
     delete this->_root;
 }
 
-void RBTree::insert(int data){
+void LLRBTree::insert(int data){
     this->_root = this->insert(data, this->_root);
 }
 
-void RBTree::remove(int data){
+void LLRBTree::remove(int data){
     this->_root = this->remove(data, this->_root);
 }
 
-int RBTree::height(){
+int LLRBTree::height(){
     return this->height(this->_root);
 }
 
-void RBTree::preorder(std::ostream& os){
+void LLRBTree::preorder(std::ostream& os){
     this->preorder(this->_root, os);
     os << "\n";
 }
 
-void RBTree::inorder(std::ostream& os){
+void LLRBTree::inorder(std::ostream& os){
     this->inorder(this->_root, os);
     os << "\n";
 }
 
-void RBTree::postorder(std::ostream& os){
+void LLRBTree::postorder(std::ostream& os){
     this->postorder(this->_root, os);
     os << "\n";
 }
 
-bool RBTree::search(int data){
+bool LLRBTree::search(int data){
     return this->search(data, this->_root);
 }

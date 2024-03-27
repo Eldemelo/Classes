@@ -9,44 +9,50 @@
 #define MAX(a,b) ((a > b) ? a : b)
 #endif
 
-// Underlying class which will be used to implement the RBTree class.
-// I.E. RBTree is made up of RBTNode
-class RBTNode
+// Underlying class which will be used to implement the LLRBTree class.
+// I.E. LLRBTree is made up of LLRBTNode
+class LLRBTNode
 {
     private:
         int data;
-        RBTNode* left;
-        RBTNode* right;
+        LLRBTNode* left;
+        LLRBTNode* right;
 
     public:
-        RBTNode(int data);
-        ~RBTNode();
+        LLRBTNode();
+        LLRBTNode(int data);
+        ~LLRBTNode();
 
-    friend class RBTree;
+    friend class LLRBTree;
 };
 
 // Public versions: accept a single parameter so the usage of the class is neat.
 // Private version: implement the functions recursively
-class RBTree
+class LLRBTree
 {
     private:
-        RBTNode* _root;
+        LLRBTNode* _root;
 
-        RBTNode* insert(int data, RBTNode* root);
-        RBTNode* remove(int data, RBTNode* root);
-        RBTNode* find_ios(RBTNode* root, bool& disconnect);
-        int height(RBTNode* root);
+        LLRBTNode* insert(int data, LLRBTNode* root);
+        LLRBTNode* remove(int data, LLRBTNode* root);
+        LLRBTNode* find_ios(LLRBTNode* root, bool& disconnect);
+        int height(LLRBTNode* root);
 
-        void preorder(RBTNode* root, std::ostream& os);
-        void inorder(RBTNode* root, std::ostream& os);
-        void postorder(RBTNode* root, std::ostream& os);
+        void preorder(LLRBTNode* root, std::ostream& os);
+        void inorder(LLRBTNode* root, std::ostream& os);
+        void postorder(LLRBTNode* root, std::ostream& os);
 
-        void destroy(RBTNode* root);
-        bool search(int data, RBTNode* root);
+        void destroy(LLRBTNode* root);
+        bool search(int data, LLRBTNode* root);
+
+        int subHeight(LLRBTNode* root);
+
+        void rotateLeft(LLRBTNode* node);
+        void rotateRight(LLRBTNode* node);
 
     public:
-        RBTree();
-        ~RBTree();
+        LLRBTree();
+        ~LLRBTree();
 
         void insert(int data);
         void remove(int data);
