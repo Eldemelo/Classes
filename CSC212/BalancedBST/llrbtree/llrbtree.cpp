@@ -35,47 +35,19 @@ LLRBTNode::~LLRBTNode(){
  * Private Functions
 */
 
-// Method to rotate the tree and balance it left
+// Private method to rotate tree left
 LLRBTNode* LLRBTree::rotateLeft(LLRBTNode* node){
-    // If there are 2 children
-    LLRBTNode* p;
-    if(node->right->left != nullptr && node->right->right != nullptr){
-        p = node->right;
-        node->right = node->right->left;
-        p->left = node;
-    }
-    // If there is no left node
-    else if(node->right->left == nullptr){
-        p = node->right;
-        p->left = node;
-    }
-    // If there is no right node
-    else if(node->right->right == nullptr){
-        p = node->right->left;
-        p->left = node;
-    }
+    LLRBTNode* p = node->right;
+    node->right = p->left;
+    p->left = node;
     return p;
 }
 
-// Method to rotate the tree and balance it to the right
+// Private method to rotate tree right
 LLRBTNode* LLRBTree::rotateRight(LLRBTNode* node){
-    // If there are 2 children
-    LLRBTNode* p;
-    if(node->left->right != nullptr && node->left->left != nullptr){
-        p = node->left;
-        node->left = node->left->right;
-        p->right = node;
-    }
-    // If there is no left node
-    else if(node->left->right == nullptr){
-        p = node->left;
-        p->right = node;
-    }
-    // If there is no right node
-    else if(node->left->left == nullptr){
-        p = node->left->right;
-        p->right = node;
-    }
+    LLRBTNode* p = node->left;
+    node->left = p->right;
+    p->right = node;
     return p;
 }
 
@@ -93,7 +65,6 @@ void LLRBTree::flipColors(LLRBTNode* node){
 
 LLRBTNode* LLRBTree::insert(int data, LLRBTNode* root){
     if(!root){
-        cout << "Inserting node: " << data << endl;
         return new LLRBTNode(data);
     }
 
