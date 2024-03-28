@@ -17,6 +17,7 @@ class LLRBTNode
         int data;
         LLRBTNode* left;
         LLRBTNode* right;
+        bool red;
 
     public:
         LLRBTNode();
@@ -45,10 +46,10 @@ class LLRBTree
         void destroy(LLRBTNode* root);
         bool search(int data, LLRBTNode* root);
 
-        int subHeight(LLRBTNode* root);
+        LLRBTNode* rotateLeft(LLRBTNode* node);
+        LLRBTNode* rotateRight(LLRBTNode* node);
 
-        void rotateLeft(LLRBTNode* node);
-        void rotateRight(LLRBTNode* node);
+        void flipColors(LLRBTNode* node);
 
     public:
         LLRBTree();

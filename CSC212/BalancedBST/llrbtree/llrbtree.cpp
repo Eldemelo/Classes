@@ -1,4 +1,9 @@
 #include "llrbtree.h"
+#include <fstream>
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 /*
  * Node Class Functions
@@ -8,12 +13,14 @@ LLRBTNode::LLRBTNode(){
     this->data = 0;
     this->left = nullptr;
     this->right = nullptr;
+    this->red = false;
 }
 
 LLRBTNode::LLRBTNode(int data){
     this->data = data;
     this->left = nullptr;
     this->right = nullptr;
+    this->red = false;
 }
 
 LLRBTNode::~LLRBTNode(){
@@ -28,21 +35,77 @@ LLRBTNode::~LLRBTNode(){
  * Private Functions
 */
 
-int LLRBTree::subHeight(LLRBTNode* root){
-    if(!root){
-        return -1;
+// Method to rotate the tree and balance it left
+LLRBTNode* LLRBTree::rotateLeft(LLRBTNode* node){
+    // If there are 2 children
+    LLRBTNode* p;
+    if(node->right->left != nullptr && node->right->right != nullptr){
+        p = node->right;
+        node->right = node->right->left;
+        p->left = node;
     }
-    int left = height(root->left);
-    int right = height(root->right);
+    // If there is no left node
+    else if(node->right->left == nullptr){
+        p = node->right;
+        p->left = node;
+    }
+    // If there is no right node
+    else if(node->right->right == nullptr){
+        p = node->right->left;
+        p->left = node;
+    }
+    return p;
+}
 
-    return (left > right ? left + 1 : right + 1);
+// Method to rotate the tree and balance it to the right
+LLRBTNode* LLRBTree::rotateRight(LLRBTNode* node){
+    // If there are 2 children
+    LLRBTNode* p;
+    if(node->left->right != nullptr && node->left->left != nullptr){
+        p = node->left;
+        node->left = node->left->right;
+        p->right = node;
+    }
+    // If there is no left node
+    else if(node->left->right == nullptr){
+        p = node->left;
+        p->right = node;
+    }
+    // If there is no right node
+    else if(node->left->left == nullptr){
+        p = node->left->right;
+        p->right = node;
+    }
+    return p;
+}
+
+// Method to navigate through the tree and flip each node's color
+void LLRBTree::flipColors(LLRBTNode* node){
+    // Base case
+    if(node == nullptr){
+        return;
+    }
+    this->flipColors(node->left);
+    this->flipColors(node->right);
+    (node->red == true) ? node->red = false : node->red = true;
+    return;
 }
 
 LLRBTNode* LLRBTree::insert(int data, LLRBTNode* root){
     if(!root){
+        cout << "Inserting node: " << data << endl;
         return new LLRBTNode(data);
     }
 
+    // Determine if the tree needs to be rotated
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+    if(leftHeight >= rightHeight + 2){
+        root = rotateRight(root);
+    }
+    else if(rightHeight >= leftHeight + 2){
+        root = rotateLeft(root);
+    }
     // Go left if data < data at this Node
     if(data < root->data){
         root->left = insert(data, root->left);
@@ -50,14 +113,6 @@ LLRBTNode* LLRBTree::insert(int data, LLRBTNode* root){
     }else{
         root->right = insert(data, root->right);
     }
-    // Method call to check if tree is balanced
-    int leftHeight = subHeight(root->left);
-    int rightHeight = subHeight(root->right);
-
-    if(leftHeight - rightHeight > 1 || leftHeight - rightHeight < -1){
-        // Call balance method
-    }
-
     return root;
 }
 
@@ -133,38 +188,38 @@ int LLRBTree::height(LLRBTNode* root){
     return (left > right ? left + 1 : right + 1);
 }
 
-void LLRBTree::preorder(LLRBTNode* root, std::ostream& os){
+void LLRBTree::preorder(LLRBTNode* root, ostream& os){
     if(!root){
         return;
     }
 
-    os << root->data << " ";
+    os << root->data << ":" << root->red << " ";
     this->preorder(root->left, os);
     this->preorder(root->right, os);
 
     return;
 }
 
-void LLRBTree::inorder(LLRBTNode* root, std::ostream& os){
+void LLRBTree::inorder(LLRBTNode* root, ostream& os){
     if(!root){
         return;
     }
 
     this->inorder(root->left, os);
-    os << root->data << " ";
+    os << root->data << ":" << root->red << " ";
     this->inorder(root->right, os);
 
     return;
 }
 
-void LLRBTree::postorder(LLRBTNode* root, std::ostream& os){
+void LLRBTree::postorder(LLRBTNode* root, ostream& os){
     if(!root){
         return;
     }
 
     this->postorder(root->left, os);
     this->postorder(root->right, os);
-    os << root->data << " ";
+    os << root->data << ":" << root->red << " ";
 
     return;
 }
@@ -220,17 +275,17 @@ int LLRBTree::height(){
     return this->height(this->_root);
 }
 
-void LLRBTree::preorder(std::ostream& os){
+void LLRBTree::preorder(ostream& os){
     this->preorder(this->_root, os);
     os << "\n";
 }
 
-void LLRBTree::inorder(std::ostream& os){
+void LLRBTree::inorder(ostream& os){
     this->inorder(this->_root, os);
     os << "\n";
 }
 
-void LLRBTree::postorder(std::ostream& os){
+void LLRBTree::postorder(ostream& os){
     this->postorder(this->_root, os);
     os << "\n";
 }
