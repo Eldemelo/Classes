@@ -13,14 +13,14 @@ LLRBTNode::LLRBTNode(){
     this->data = 0;
     this->left = nullptr;
     this->right = nullptr;
-    this->red = false;
+    this->red = true;
 }
 
 LLRBTNode::LLRBTNode(int data){
     this->data = data;
     this->left = nullptr;
     this->right = nullptr;
-    this->red = false;
+    this->red = true;
 }
 
 LLRBTNode::~LLRBTNode(){
@@ -53,172 +53,199 @@ LLRBTNode* LLRBTree::rotateRight(LLRBTNode* node){
 
 // Method to navigate through the tree and flip each node's color
 void LLRBTree::flipColors(LLRBTNode* node){
-    // Base case
-    if(node == nullptr){
-        return;
+    // Flip current node
+    node->red ? node->red = false : node->red = true;
+    // If node to left exists, flip
+    if(node->left){
+        node->left->red ? node->left->red = false : node->left->red = true;
     }
-    this->flipColors(node->left);
-    this->flipColors(node->right);
-    (node->red == true) ? node->red = false : node->red = true;
-    return;
+    // If node to right exists, flip
+    if(node->right){
+        node->right->red ? node->right->red = false : node->right->red = true;
+    }
 }
 
-LLRBTNode* LLRBTree::insert(int data, LLRBTNode* root){
-    if(!root){
+// TODO check for order of red/black violations
+LLRBTNode* LLRBTree::insert(int data, LLRBTNode* node){
+    if(!node){
         return new LLRBTNode(data);
     }
-
-    // Determine if the tree needs to be rotated
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-    if(leftHeight >= rightHeight + 2){
-        root = rotateRight(root);
-    }
-    else if(rightHeight >= leftHeight + 2){
-        root = rotateLeft(root);
-    }
     // Go left if data < data at this Node
-    if(data < root->data){
-        root->left = insert(data, root->left);
+    if(data < node->data){
+        node->left = insert(data, node->left);
     // Go right otherwise
     }else{
-        root->right = insert(data, root->right);
+        node->right = insert(data, node->right);
     }
-    return root;
+    // Check black/red rules
+    // If a node has a RED LEFT child and a RED LEFT grandchild, right rotate & swap colors
+    if(node->left && node->left->red == true){
+        if(node->left->left && node->left->left->red == true){
+            flipColors(node);
+            node = rotateRight(node);
+        }
+    }
+    // Determine if the tree needs to be rotated
+    int leftHeight = height(node->left);
+    int rightHeight = height(node->right);
+    if(leftHeight >= rightHeight + 2){
+        node = rotateRight(node);
+    }
+    else if(rightHeight >= leftHeight + 2){
+        node = rotateLeft(node);
+    }
+    // If both LEFT and RIGHT children are RED, invert colors of all 3 Nodes
+    if(node->left && node->right){
+        if(node->left->red == true && node->right->red == true){
+            flipColors(node);
+        }
+    }
+    // If a node has a BLACK LEFT child and a RED RIGHT child, left-rotate the Node & swap colors
+    if(!node->left || (node->left && node->left->red == false)){
+        if(node->right && node->right->red == true){
+            node = rotateLeft(node);
+            flipColors(node);
+        }
+    }
+    // If the root is red, flip its color
+    if(this->_root->red == true){
+        this->_root->red = false;
+    }
+    return node;
 }
 
-LLRBTNode* LLRBTree::remove(int data, LLRBTNode* root){
-    if(!root){
+LLRBTNode* LLRBTree::remove(int data, LLRBTNode* node){
+    if(!node){
         return nullptr;
     }
 
     // We found what we're looking for, delete it.
-    if(data == root->data){
+    if(data == node->data){
         LLRBTNode* temp;
         // This is a leaf node
-        if(root->left == root->right){
-            delete root;
+        if(node->left == node->right){
+            delete node;
             return nullptr;
         }
 
         // This node has 1 child
-        if(!root->left != !root->right){
+        if(!node->left != !node->right){
             // Set temp to whichever child exists
-            root->left ? temp = root->left : temp = root->right;
+            node->left ? temp = node->left : temp = node->right;
 
-            delete root;
+            delete node;
             return temp;
         }
 
         // This node has 2 children
         // Find the in-order successor
-        temp = root->right;
+        temp = node->right;
 
         while(temp->left){
             temp = temp->left;
         }
 
         // Copy the data to this node and delete the original
-        root->data = temp->data;
-        root->right = remove(temp->data, root->right);
-        return root;
+        node->data = temp->data;
+        node->right = remove(temp->data, node->right);
+        return node;
     }
 
     // This is not the Node we're looking for, recursively find the data we want to delete
-    if(data < root->data){
-        root->left = remove(data, root->left);
+    if(data < node->data){
+        node->left = remove(data, node->left);
     }else{
-        root->right = remove(data, root->right);
+        node->right = remove(data, node->right);
     }
 
-    return root;
+    return node;
 }
 
-LLRBTNode* LLRBTree::find_ios(LLRBTNode* root, bool& disconnect){
-    if(!root->left){
+LLRBTNode* LLRBTree::find_ios(LLRBTNode* node, bool& disconnect){
+    if(!node->left){
         disconnect = true;
-        return root;
+        return node;
     }
-    LLRBTNode* temp = find_ios(root->left, disconnect);
+    LLRBTNode* temp = find_ios(node->left, disconnect);
 
     if(disconnect){
-        root->left = nullptr;
+        node->left = nullptr;
         disconnect = false;
     }
 
     return temp;
 }
 
-int LLRBTree::height(LLRBTNode* root){
-    if(!root){
+int LLRBTree::height(LLRBTNode* node){
+    if(!node){
         return -1;
     }
-    int left = height(root->left);
-    int right = height(root->right);
+    int left = height(node->left);
+    int right = height(node->right);
 
     return (left > right ? left + 1 : right + 1);
 }
 
-void LLRBTree::preorder(LLRBTNode* root, ostream& os){
-    if(!root){
+void LLRBTree::preorder(LLRBTNode* node, ostream& os){
+    if(!node){
         return;
     }
 
-    os << root->data << ":" << root->red << " ";
-    this->preorder(root->left, os);
-    this->preorder(root->right, os);
+    os << node->data << ":" << node->red << " ";
+    this->preorder(node->left, os);
+    this->preorder(node->right, os);
 
     return;
 }
 
-void LLRBTree::inorder(LLRBTNode* root, ostream& os){
-    if(!root){
+void LLRBTree::inorder(LLRBTNode* node, ostream& os){
+    if(!node){
         return;
     }
 
-    this->inorder(root->left, os);
-    os << root->data << ":" << root->red << " ";
-    this->inorder(root->right, os);
+    this->inorder(node->left, os);
+    os << node->data << ":" << node->red << " ";
+    this->inorder(node->right, os);
 
     return;
 }
 
-void LLRBTree::postorder(LLRBTNode* root, ostream& os){
-    if(!root){
+void LLRBTree::postorder(LLRBTNode* node, ostream& os){
+    if(!node){
         return;
     }
 
-    this->postorder(root->left, os);
-    this->postorder(root->right, os);
-    os << root->data << ":" << root->red << " ";
+    this->postorder(node->left, os);
+    this->postorder(node->right, os);
+    os << node->data << ":" << node->red << " ";
 
     return;
 }
 
-void LLRBTree::destroy(LLRBTNode* root){
-    if(!root){
+void LLRBTree::destroy(LLRBTNode* node){
+    if(!node){
         return;
     }
 
-    this->destroy(root->left);
-    this->destroy(root->right);
-    delete root->left;
-    delete root->right;
+    this->destroy(node->left);
+    this->destroy(node->right);
+    delete node->left;
+    delete node->right;
 }
 
-bool LLRBTree::search(int data, LLRBTNode* root){
-    if(!root){
+bool LLRBTree::search(int data, LLRBTNode* node){
+    if(!node){
         return false;
     }
 
-    if(data == root->data){
+    if(data == node->data){
         return true;
     }
 
-    if(data < root->data){
-        return this->search(data, root->left);
+    if(data < node->data){
+        return this->search(data, node->left);
     }else{
-        return this->search(data, root->right);
+        return this->search(data, node->right);
     }
 }
 
@@ -235,7 +262,13 @@ LLRBTree::~LLRBTree(){
 }
 
 void LLRBTree::insert(int data){
+    if(!this->_root){
+        this->_root = this->insert(data, this->_root);
+        this->_root->red = false;
+        return;
+    }
     this->_root = this->insert(data, this->_root);
+    //checkColors(this->_root);
 }
 
 void LLRBTree::remove(int data){

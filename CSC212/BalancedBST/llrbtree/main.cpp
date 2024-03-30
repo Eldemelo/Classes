@@ -27,7 +27,7 @@ int main(int argc, char*argv[]){
         print_tree(&tree, mode, ofs);
         cout << "Height: " << tree.height() << endl;
     }
-    ofs << "Tree Height: " << tree.height();
+    cout << "Tree Height: " << tree.height();
     ifs.close();
     ofs.close();
 }
