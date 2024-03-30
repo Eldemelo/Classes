@@ -50,8 +50,6 @@ class LLRBTree
         LLRBTNode* rotateRight(LLRBTNode* node);
 
         LLRBTNode* flipColors(LLRBTNode* node);
-        LLRBTNode* flipColorsLeft(LLRBTNode* node);
-        LLRBTNode* flipColorsRight(LLRBTNode* node);
 
     public:
         LLRBTree();
