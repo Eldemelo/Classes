@@ -51,10 +51,10 @@ LLRBTNode* LLRBTree::rotateRight(LLRBTNode* node){
     return p;
 }
 
-// Method to navigate through the tree and flip each node's color
-void LLRBTree::flipColors(LLRBTNode* node){
+// Method to flip node and its 2 children
+LLRBTNode* LLRBTree::flipColors(LLRBTNode* node){
     // Flip current node
-    node->red ? node->red = false : node->red = true;
+    node->red == true ? node->red = false : node->red = true;
     // If node to left exists, flip
     if(node->left){
         node->left->red ? node->left->red = false : node->left->red = true;
@@ -63,6 +63,29 @@ void LLRBTree::flipColors(LLRBTNode* node){
     if(node->right){
         node->right->red ? node->right->red = false : node->right->red = true;
     }
+    return node;
+}
+
+// Method to flip colors before left rotation
+LLRBTNode* LLRBTree::flipColorsLeft(LLRBTNode* node){
+    // Flip current node
+    node->red == true ? node->red = false : node->red = true;
+    // If node to right exists, flip
+    if(node->right){
+        node->right->red ? node->right->red = false : node->right->red = true;
+    }
+    return node;
+}
+
+// Method to flip colors before right rotation
+LLRBTNode* LLRBTree::flipColorsRight(LLRBTNode* node){
+    // Flip current node
+    node->red == true ? node->red = false : node->red = true;
+    // If node to left exists, flip
+    if(node->left){
+        node->left->red ? node->left->red = false : node->left->red = true;
+    }
+    return node;
 }
 
 // TODO check for order of red/black violations
@@ -77,42 +100,95 @@ LLRBTNode* LLRBTree::insert(int data, LLRBTNode* node){
     }else{
         node->right = insert(data, node->right);
     }
-    // Check black/red rules
-    // If a node has a RED LEFT child and a RED LEFT grandchild, right rotate & swap colors
-    if(node->left && node->left->red == true){
-        if(node->left->left && node->left->left->red == true){
-            flipColors(node);
+    bool valid = false;
+    while(!valid){
+        valid = true;
+        // Check black/red rules
+        // If both LEFT and RIGHT children are RED, invert colors of all 3 Nodes
+        if(node->left && node->right){
+            if(node->left->red == true && node->right->red == true){
+                valid = false;
+                node = flipColors(node);
+            }
+        }
+        // If a node has a BLACK LEFT child and a RED RIGHT child, left-rotate the Node & swap colors
+        if((node->left && node->left->red == false) || !node->left){
+            if(node->right && node->right->red == true){
+                valid = false;
+                node = flipColorsLeft(node);
+                node = rotateLeft(node);
+            }
+        }
+        // If a node has a RED LEFT child and a RED LEFT grandchild, right rotate & swap colors
+        if(node->left && node->left->red == true){
+            if(node->left->left && node->left->left->red == true){
+                valid = false;
+                node = flipColorsRight(node);
+                node = rotateRight(node);
+            }
+        }
+        // Determine if the tree needs to be rotated
+        int leftHeight = height(node->left);
+        int rightHeight = height(node->right);
+        if(leftHeight >= rightHeight + 2){
             node = rotateRight(node);
         }
-    }
-    // Determine if the tree needs to be rotated
-    int leftHeight = height(node->left);
-    int rightHeight = height(node->right);
-    if(leftHeight >= rightHeight + 2){
-        node = rotateRight(node);
-    }
-    else if(rightHeight >= leftHeight + 2){
-        node = rotateLeft(node);
-    }
-    // If both LEFT and RIGHT children are RED, invert colors of all 3 Nodes
-    if(node->left && node->right){
-        if(node->left->red == true && node->right->red == true){
-            flipColors(node);
-        }
-    }
-    // If a node has a BLACK LEFT child and a RED RIGHT child, left-rotate the Node & swap colors
-    if(!node->left || (node->left && node->left->red == false)){
-        if(node->right && node->right->red == true){
+        else if(rightHeight >= leftHeight + 2){
             node = rotateLeft(node);
-            flipColors(node);
         }
     }
-    // If the root is red, flip its color
-    if(this->_root->red == true){
-        this->_root->red = false;
-    }
+    // Navigate back to root and set its color to black
     return node;
 }
+
+// LLRBTNode* LLRBTree::insert(int data, LLRBTNode* node){
+//     if(!node){
+//         return new LLRBTNode(data);
+//     }
+//     // Go left if data < data at this Node
+//     if(data < node->data){
+//         node->left = insert(data, node->left);
+//     // Go right otherwise
+//     }else{
+//         node->right = insert(data, node->right);
+//     }
+//     // Check black/red rules
+//     // If a node has a RED LEFT child and a RED LEFT grandchild, right rotate & swap colors
+//     if(node->left && node->left->red == true){
+//         if(node->left->left && node->left->left->red == true){
+//             flipColors(node);
+//             node = rotateRight(node);
+//         }
+//     }
+//     // Determine if the tree needs to be rotated
+//     int leftHeight = height(node->left);
+//     int rightHeight = height(node->right);
+//     if(leftHeight >= rightHeight + 2){
+//         node = rotateRight(node);
+//     }
+//     else if(rightHeight >= leftHeight + 2){
+//         node = rotateLeft(node);
+//     }
+//     // If both LEFT and RIGHT children are RED, invert colors of all 3 Nodes
+//     if(node->left && node->right){
+//         if(node->left->red == true && node->right->red == true){
+//             flipColors(node);
+//         }
+//     }
+//     // If a node has a BLACK LEFT child and a RED RIGHT child, left-rotate the Node & swap colors
+//     if(!node->left || (node->left && node->left->red == false)){
+//         if(node->right && node->right->red == true){
+//             node = rotateLeft(node);
+//             flipColors(node);
+//         }
+//     }
+//     // If the root is red, flip its color
+//     if(height(node) == height(this->_root)){
+//         //cout << "Node: " << node->data << " setting red = false" << endl;
+//         node->red = false;
+//     }
+//     return node;
+// }
 
 LLRBTNode* LLRBTree::remove(int data, LLRBTNode* node){
     if(!node){
@@ -268,7 +344,7 @@ void LLRBTree::insert(int data){
         return;
     }
     this->_root = this->insert(data, this->_root);
-    //checkColors(this->_root);
+    this->_root->red = false;
 }
 
 void LLRBTree::remove(int data){
