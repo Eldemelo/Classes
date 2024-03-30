@@ -3,13 +3,13 @@
 #include <sstream>
 #include <bitset>
 
-void print_tree(RBTree* tree, std::bitset<3> mode);
+void print_tree(LLRBTree* tree, std::bitset<3> mode);
 
 int main(int argc, char*argv[]){
     std::ifstream ifs(argv[1]);
     std::bitset<3> mode(*argv[2]);
 
-    RBTree tree;
+    LLRBTree tree;
 
     std::string line;
 
@@ -47,7 +47,7 @@ int main(int argc, char*argv[]){
  * in+post = 6
  * pre+in+post = 7
  */
-void print_tree(RBTree* tree, std::bitset<3> mode){
+void print_tree(LLRBTree* tree, std::bitset<3> mode){
     if(mode[0]){
         tree->preorder();
     }
