@@ -1,13 +1,16 @@
-#include "llrbtree.h"
+#include "llrbtree_remove.h"
 #include <fstream>
 #include <sstream>
 #include <bitset>
 
-void print_tree(LLRBTree* tree, std::bitset<3> mode);
+using namespace std;
+
+void print_tree(LLRBTree* tree, bitset<3> mode, ofstream& os);
 
 int main(int argc, char*argv[]){
-    std::ifstream ifs(argv[1]);
-    std::bitset<3> mode(*argv[2]);
+    ifstream ifs(argv[1]);
+    bitset<3> mode(*argv[2]);
+    ofstream ofs(argv[3]);
 
     LLRBTree tree;
 
@@ -21,7 +24,7 @@ int main(int argc, char*argv[]){
     // Insert the numbers
     while(ss >> num){
         tree.insert(num);
-        print_tree(&tree, mode);
+        print_tree(&tree, mode, ofs);
         std::cout << "Height: " << tree.height() << std::endl;
     }
 
@@ -33,7 +36,7 @@ int main(int argc, char*argv[]){
     // Remove the numbers
     while(ss >> num){
         tree.remove(num);
-        print_tree(&tree, mode);
+        print_tree(&tree, mode, ofs);
         std::cout << "Height: " << tree.height() << std::endl;
     }
 }
@@ -47,14 +50,14 @@ int main(int argc, char*argv[]){
  * in+post = 6
  * pre+in+post = 7
  */
-void print_tree(LLRBTree* tree, std::bitset<3> mode){
+void print_tree(LLRBTree* tree, std::bitset<3> mode, ofstream& os){
     if(mode[0]){
-        tree->preorder();
+        tree->preorder(os);
     }
     if(mode[1]){
-        tree->inorder();
+        tree->inorder(os);
     }
     if(mode[2]){
-        tree->postorder();
+        tree->postorder(os);
     }
 }
