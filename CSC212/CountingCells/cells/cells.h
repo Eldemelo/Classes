@@ -1,0 +1,31 @@
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+class cells{
+    private:
+        bool filled;
+        cells* n;
+        cells* ne;
+        cells* e;
+        cells* se;
+        cells* s;
+        cells* sw;
+        cells* w;
+        cells* nw;
+
+        friend class grid;
+    public:
+    cells();
+    cells(bool filled);
+};
+
+class grid{
+    private:
+        cells* startingCell;
+        cells* origin;
+    public:
+    grid();
+    grid(string fName, int rows, int cols, int startingRow, int startingCol, int conn);
+};
