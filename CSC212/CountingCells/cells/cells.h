@@ -5,6 +5,7 @@ using namespace std;
 
 class cells{
     private:
+        bool visited;
         bool filled;
         cells* n;
         cells* ne;
@@ -25,6 +26,7 @@ class grid{
     private:
         cells* startingCell;
         cells* origin;
+        int connType(cells* cell, int conn);
     public:
     grid();
     grid(string fName, int rows, int cols, int startingRow, int startingCol, int conn);
