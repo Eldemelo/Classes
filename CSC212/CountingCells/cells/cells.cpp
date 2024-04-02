@@ -41,21 +41,16 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     getline(inFile, currLine);
     istringstream ss(currLine);
     bool temp;
+    // Set the origin
+    ss >> temp;
+    this->origin = new cells(temp);
     cells* tempCell = this->origin;
     // Take every value in the first line
-    for(int i = 1; i <= cols; i++){
-        ss >> temp;
-        // If it's the first value, it is the origin
-        if(i == 1){
-            this->origin = new cells(temp);
-        }
-        // Else it goes to the right
-        else{
-            tempCell->e = new cells(temp);
-            cells* prevCell = tempCell;
-            tempCell = tempCell->e;
-            tempCell->w = prevCell;
-        }
+    while(ss >> temp){
+        tempCell->e = new cells(temp);
+        cells* prev = tempCell;
+        tempCell = tempCell->e;
+        tempCell->w = prev;
     }
     // Navigate temp cell back to left
     tempCell = this->origin;
@@ -63,8 +58,7 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     // While there are lines to read from the file
     while(getline(inFile, currLine)){
         istringstream ss(currLine);
-        ss >> temp;
-        for(int i = 1; i <= cols; i++){
+        while(ss >> temp){
             tempCell->s = new cells(temp);
             cells* prevCell = tempCell;
             tempCell = tempCell->s;
@@ -83,60 +77,48 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
                 tempCell = tempCell->ne;
             }
         }
+        // Navigate back to the left
+        while(tempCell->w){
+            tempCell = tempCell->w;
+        }
     }
     // Get the starting cell
     tempCell = this->origin;
-    for(int i = 1; i <= startingRow; i++){
-        cout << tempCell->filled << endl;
+    for(int i = 1; i < startingRow; i++){
         tempCell = tempCell->s;
     }
-    for(int j = 1; j <= startingCol; j++){
-        cout << tempCell->filled << " ";
+    for(int j = 1; j < startingCol; j++){
+        tempCell = tempCell->e;
     }
-    cout << "helloooo" << endl;
     this->startingCell = tempCell;
     // Determine which conn type to use
-    cout << "Blob Size " << connType(this->startingCell, conn);
+    cout << connType(this->startingCell, conn);
 }
 // Check all blobs connected to the north south east or west
 int grid::connType(cells* cell, int conn){
     int blobSize = 0;
-    if(conn == 4){
-        if(!cell){
-            return 0;
-        }
-        else if(cell->visited){
-            return 0;
-        }
-        cell->visited = true;
-        if(cell->filled){
-            blobSize = 1;
-            blobSize += connType(cell->n, conn);
-            blobSize += connType(cell->s, conn);
-            blobSize += connType(cell->e, conn);
-            blobSize += connType(cell->w, conn);
-        }
-        return blobSize;
+    if(!cell){
+        return 0;
     }
-    else{
-        if(conn == 4){
-        if(!cell){
-            return 0;
-        }
-        else if(cell->visited){
-            return 0;
-        }
-        cell->visited = true;
-        if(cell->filled){
-            blobSize = 1;
-            blobSize += connType(cell->n, conn);
-            blobSize += connType(cell->s, conn);
-            blobSize += connType(cell->e, conn);
-            blobSize += connType(cell->w, conn);
-            blobSize += connType(cell->ne, conn);
-            blobSize += connType(cell->nw, conn);
-            blobSize += connType(cell->se, conn);
-            blobSize += connType(cell->sw, conn);
+    else if(cell->visited){
+        return 0;
+    }
+    cell->visited = true;
+    if(cell->filled){
+        blobSize = 1;
+        blobSize += connType(cell->n, conn);
+        blobSize += connType(cell->s, conn);
+        blobSize += connType(cell->e, conn);
+        blobSize += connType(cell->w, conn);
+        // If the conn type is 8, go diagonal as well
+        if(conn == 8){
+            if(cell->n){
+                blobSize += connType(cell->n->e, conn);
+                blobSize += connType(cell->n->w, conn);
+            }
+            if(cell->s){
+                blobSize += connType(cell->s->e, conn);
+                blobSize += connType(cell->s->w, conn);
             }
         }
     }
