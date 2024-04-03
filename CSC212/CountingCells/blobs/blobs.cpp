@@ -78,17 +78,30 @@ grid::grid(string fName, int rows, int cols, int conn){
         }
     }
     // Determine which conn type to use
-    cout << blobCount(this->startingCell, conn) << endl;
+    cout << blobCount(this->origin, conn) << endl;
 }
 
 // Method to check all cells in the grid
 int grid::blobCount(cells* cell, int conn){
     // Iterate through the row and column count
-    for(int i = 1; i < this->rows; i++){
-        for(int j = 1; j < this->cols; j++){
-            
+    int count = 0;
+    while(cell){
+        while(cell->e){
+            // cout << cell->filled << " ";
+            if(cell->filled && !cell->visited){
+                connType(cell, conn);
+                count++;
+            }
+            cell->visited = true;
+            cell = cell->e;
         }
+        while(cell->w){
+            cell = cell->w;
+        }
+        cell = cell->s;
+        // cout << endl;
     }
+    return count;
 }
 
 
