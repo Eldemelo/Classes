@@ -8,26 +8,18 @@ cells::cells(){
     this->visited = false;
     this->filled = false;
     this->n = nullptr;
-    this->ne = nullptr;
     this->e = nullptr;
-    this->se = nullptr;
     this->s = nullptr;
-    this->sw = nullptr;
     this->w = nullptr;
-    this->nw = nullptr;
 }
 
 cells::cells(bool filled){
     this->visited = false;
     this->filled = filled;
     this->n = nullptr;
-    this->ne = nullptr;
     this->e = nullptr;
-    this->se = nullptr;
     this->s = nullptr;
-    this->sw = nullptr;
     this->w = nullptr;
-    this->nw = nullptr;
 }
 
 grid::grid(){
@@ -63,18 +55,10 @@ grid::grid(string fName, int rows, int cols, int conn){
             cells* prevCell = tempCell;
             tempCell = tempCell->s;
             tempCell->n = prevCell;
-            if(prevCell->e){
-                tempCell->ne = prevCell->e;
-                prevCell->e->sw = tempCell;
-            }
             if(prevCell->w){
-                tempCell->w = prevCell->sw;
-                prevCell->sw->e = tempCell;
-                tempCell->nw = prevCell->w;
-                prevCell->w->se = tempCell;
-            }
-            if(tempCell->ne){
-                tempCell = tempCell->ne;
+                prevCell = prevCell->w->s;
+                prevCell->e = tempCell;
+                tempCell->w = prevCell;
             }
         }
         // Navigate back to the left
@@ -83,7 +67,7 @@ grid::grid(string fName, int rows, int cols, int conn){
         }
     }
     // Determine which conn type to use
-    cout << blobCount(this->origin, conn) << endl;
+    cout << connType(this->origin, conn) << endl;
 }
 
 // Method to check all cells in the grid

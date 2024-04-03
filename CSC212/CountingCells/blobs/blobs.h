@@ -8,13 +8,9 @@ class cells{
         bool visited;
         bool filled;
         cells* n;
-        cells* ne;
         cells* e;
-        cells* se;
         cells* s;
-        cells* sw;
         cells* w;
-        cells* nw;
 
         friend class grid;
     public:

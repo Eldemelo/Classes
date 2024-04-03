@@ -8,26 +8,18 @@ cells::cells(){
     this->visited = false;
     this->filled = false;
     this->n = nullptr;
-    this->ne = nullptr;
     this->e = nullptr;
-    this->se = nullptr;
     this->s = nullptr;
-    this->sw = nullptr;
     this->w = nullptr;
-    this->nw = nullptr;
 }
 
 cells::cells(bool filled){
     this->visited = false;
     this->filled = filled;
     this->n = nullptr;
-    this->ne = nullptr;
     this->e = nullptr;
-    this->se = nullptr;
     this->s = nullptr;
-    this->sw = nullptr;
     this->w = nullptr;
-    this->nw = nullptr;
 }
 
 grid::grid(){
@@ -46,12 +38,15 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     this->origin = new cells(temp);
     cells* tempCell = this->origin;
     // Take every value in the first line
+    // cout << temp << " ";
     while(ss >> temp){
+        // cout << temp << " ";
         tempCell->e = new cells(temp);
         cells* prev = tempCell;
         tempCell = tempCell->e;
         tempCell->w = prev;
     }
+    // cout << endl;
     // Navigate temp cell back to left
     tempCell = this->origin;
 
@@ -59,24 +54,22 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     while(getline(inFile, currLine)){
         istringstream ss(currLine);
         while(ss >> temp){
+            // cout << temp << " ";
             tempCell->s = new cells(temp);
             cells* prevCell = tempCell;
             tempCell = tempCell->s;
             tempCell->n = prevCell;
-            if(prevCell->e){
-                tempCell->ne = prevCell->e;
-                prevCell->e->sw = tempCell;
-            }
             if(prevCell->w){
-                tempCell->w = prevCell->sw;
-                prevCell->sw->e = tempCell;
-                tempCell->nw = prevCell->w;
-                prevCell->w->se = tempCell;
+                prevCell = prevCell->w->s;
+                prevCell->e = tempCell;
+                tempCell->w = prevCell;
+                prevCell = prevCell->n->e;
             }
-            if(tempCell->ne){
-                tempCell = tempCell->ne;
+            if(prevCell->e){
+                tempCell = prevCell->e;
             }
         }
+        // cout << endl;
         // Navigate back to the left
         while(tempCell->w){
             tempCell = tempCell->w;
@@ -92,9 +85,32 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     }
     this->startingCell = tempCell;
     // Determine which conn type to use
-    cout << connType(this->startingCell, conn);
+    cout << connType(this->startingCell, conn) << endl;
 }
-// Check all blobs connected to the north south east or west
+
+// Method to check all cells in the grid
+int grid::blobCount(cells* cell, int conn){
+    if(!cell){
+        return 0;
+    }
+    int bCount = 0;
+    if(cell->filled && !cell->visited){
+        bCount ++;
+        connType(cell, conn);
+    }
+    cell->visited = true;
+    if(cell->e == cell){
+        return bCount;
+    }
+    if(cell->s = cell){
+        return bCount;
+    }
+    bCount += blobCount(cell->e, conn);
+    bCount += blobCount(cell->s, conn);
+    return bCount;
+}
+
+
 int grid::connType(cells* cell, int conn){
     int blobSize = 0;
     if(!cell){
