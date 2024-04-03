@@ -27,6 +27,8 @@ grid::grid(){
 }
 
 grid::grid(string fName, int rows, int cols, int conn){
+    this->rows = rows;
+    this->cols = cols;
     ifstream inFile(fName);
     string currLine;
     // Get first line to set origin
@@ -38,12 +40,15 @@ grid::grid(string fName, int rows, int cols, int conn){
     this->origin = new cells(temp);
     cells* tempCell = this->origin;
     // Take every value in the first line
+    // cout << temp << " ";
     while(ss >> temp){
+        // cout << temp << " ";
         tempCell->e = new cells(temp);
         cells* prev = tempCell;
         tempCell = tempCell->e;
         tempCell->w = prev;
     }
+    // cout << endl;
     // Navigate temp cell back to left
     tempCell = this->origin;
 
@@ -51,6 +56,7 @@ grid::grid(string fName, int rows, int cols, int conn){
     while(getline(inFile, currLine)){
         istringstream ss(currLine);
         while(ss >> temp){
+            // cout << temp << " ";
             tempCell->s = new cells(temp);
             cells* prevCell = tempCell;
             tempCell = tempCell->s;
@@ -59,37 +65,30 @@ grid::grid(string fName, int rows, int cols, int conn){
                 prevCell = prevCell->w->s;
                 prevCell->e = tempCell;
                 tempCell->w = prevCell;
+                prevCell = prevCell->n->e;
+            }
+            if(prevCell->e){
+                tempCell = prevCell->e;
             }
         }
+        // cout << endl;
         // Navigate back to the left
         while(tempCell->w){
             tempCell = tempCell->w;
         }
     }
     // Determine which conn type to use
-    cout << connType(this->origin, conn) << endl;
+    cout << blobCount(this->startingCell, conn) << endl;
 }
 
 // Method to check all cells in the grid
 int grid::blobCount(cells* cell, int conn){
-    if(!cell){
-        return 0;
+    // Iterate through the row and column count
+    for(int i = 1; i < this->rows; i++){
+        for(int j = 1; j < this->cols; j++){
+            
+        }
     }
-    int bCount = 0;
-    if(cell->filled && !cell->visited){
-        bCount ++;
-        connType(cell, conn);
-    }
-    cell->visited = true;
-    if(cell->e == cell){
-        return bCount;
-    }
-    if(cell->s = cell){
-        return bCount;
-    }
-    bCount += blobCount(cell->e, conn);
-    bCount += blobCount(cell->s, conn);
-    return bCount;
 }
 
 

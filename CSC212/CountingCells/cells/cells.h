@@ -23,7 +23,6 @@ class grid{
         cells* startingCell;
         cells* origin;
         int connType(cells* cell, int conn);
-        int blobCount(cells* cell, int conn);
     public:
     grid();
     grid(string fName, int rows, int cols, int startRow, int startCol, int conn);

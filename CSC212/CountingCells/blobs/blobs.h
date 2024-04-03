@@ -20,6 +20,8 @@ class cells{
 
 class grid{
     private:
+        int rows;
+        int cols;
         cells* startingCell;
         cells* origin;
         int connType(cells* cell, int conn);

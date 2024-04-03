@@ -88,29 +88,6 @@ grid::grid(string fName, int rows, int cols, int startingRow, int startingCol, i
     cout << connType(this->startingCell, conn) << endl;
 }
 
-// Method to check all cells in the grid
-int grid::blobCount(cells* cell, int conn){
-    if(!cell){
-        return 0;
-    }
-    int bCount = 0;
-    if(cell->filled && !cell->visited){
-        bCount ++;
-        connType(cell, conn);
-    }
-    cell->visited = true;
-    if(cell->e == cell){
-        return bCount;
-    }
-    if(cell->s = cell){
-        return bCount;
-    }
-    bCount += blobCount(cell->e, conn);
-    bCount += blobCount(cell->s, conn);
-    return bCount;
-}
-
-
 int grid::connType(cells* cell, int conn){
     int blobSize = 0;
     if(!cell){
