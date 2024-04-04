@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <fstream>
 
@@ -25,6 +26,7 @@ class grid{
     public:
     grid();
     grid(string fName, int rows, int cols);
-    pair<int, int> findLowest(cells* cell);
-    pair<int, int> findHighest(cells* cell);
+    tuple<int, int, int> findLowest(cells* cell);
+    tuple<int, int, int> findHighest(cells* cell);
+    bool hasPath(cells* cell, int lowest, int highest);
 };
