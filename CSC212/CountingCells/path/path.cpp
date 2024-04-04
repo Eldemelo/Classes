@@ -23,7 +23,9 @@ cells::cells(int value){
 }
 
 grid::grid(){
-    
+    this->rows = 0;
+    this->cols = 0;
+    this->origin = nullptr;
 }
 
 grid::grid(string fName, int rows, int cols){
@@ -110,15 +112,27 @@ bool grid::hasPath(cells* cell, int lowest, int highest){
     // Navigate each direction if possible
     if(cell->n && cell->n->value >= cell->value && !cell->n->visited){
         pathFound = hasPath(cell->n, cell->value, highest);
+        if(pathFound){
+            return true;
+        }
     }
     if(cell->e && cell->e->value >= cell->value && !cell->e->visited){
         pathFound = hasPath(cell->e, cell->value, highest);
+        if(pathFound){
+            return true;
+        }
     }
     if(cell->s && cell->s->value >= cell->value && !cell->s->visited){
         pathFound = hasPath(cell->s, cell->value, highest);
+        if(pathFound){
+            return true;
+        }
     }
     if(cell->w && cell->w->value >= cell->value && !cell->w->visited){
         pathFound = hasPath(cell->w, cell->value, highest);
+        if(pathFound){
+            return true;
+        }
     }
     return pathFound;
 }
