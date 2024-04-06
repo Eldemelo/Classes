@@ -79,7 +79,6 @@ bool arithmetic::isOperator(string token){
     return false;
 }
 
-
 int main(int argc, char* argv[]){
     string equation = argv[1];
 
