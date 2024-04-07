@@ -15,6 +15,8 @@ class HashTable{
         vector<int> resize_table();
         int get_table_prime();
         int getHash(int value, int size);
+        int getDoubleHash(int value, int size);
+        void linearProbe(int value, int index);
     public:
         HashTable();
         HashTable(int mode);
