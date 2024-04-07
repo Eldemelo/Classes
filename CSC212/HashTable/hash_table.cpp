@@ -97,8 +97,8 @@ void HashTable::insert(int num){
                 break;
             // Double Hashing
             case 1:
-                int index = getDoubleHash(num, this->size);
-                this->table[index] = num;
+                int doubleIndex = getDoubleHash(num, this->size);
+                this->table[doubleIndex] = num;
                 break;
             // Separate Chaining
             case 2:
