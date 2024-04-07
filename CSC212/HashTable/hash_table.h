@@ -11,7 +11,7 @@ class HashTable{
         int size;
         int amountFilled;
         int collisions;
-        vector<int> table;
+        vector<vector<int>> table;
         vector<int> resize_table();
         int get_table_prime();
         int getHash(int value, int size);

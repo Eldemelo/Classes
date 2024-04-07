@@ -10,7 +10,7 @@ HashTable::HashTable(int mode){
     this->amountFilled = 0;
     this->collisions = 0;
     // Initialize vector with size 1 and default value 0
-    this->table = vector(1, 0);
+    this->table = vector<vector<int>>(1, vector<int>(1, 0));
     this->size = 1;
 }
 
@@ -18,7 +18,7 @@ HashTable::HashTable(int mode){
 vector<int> HashTable::resize_table(){
     this->size *= 2;
     vector<int> temp(this->size, 0);
-    for(int value : this->table){
+    for(vector<int> row : this->table){
         int index = getHash(value, this->size);
         // temp[index] = 
     }
