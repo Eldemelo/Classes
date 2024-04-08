@@ -15,52 +15,18 @@ HashTable::HashTable(int mode){
 }
 
 // Private Methods
-vector<vector<int>> HashTable::resize_table(){
+void HashTable::resize_table(){
     this->size *= 2;
-    vector<vector<int>> temp(this->size, vector<int>(1,0));
-    for(vector<int> row : this->table){
+    vector<vector<int>> temp = this->table;
+    this->table = vector<vector<int>>(this->size, vector<int>(1,0));
+    this->amountFilled = 0;
+    for(vector<int> row : temp){
         for(int val : row){
             if(val != 0){
-                temp = resizeInsert(val, temp);
+                insert(val);
             }
         }
     }
-    return temp;
-}
-
-// Helper method for resize table
-vector<vector<int>> HashTable::resizeInsert(int num, vector<vector<int>> temp){
-    // If the table is 70% or more full
-    int index = getHash(num, this->size);
-    // We have a collision
-    if(temp[index][0] != 0){
-        // Increment the number of collisions
-        this->collisions++;
-        switch(this->mode){
-            // Linear Probing
-            case 0:{
-                temp = linearProbe(num, index, temp);
-                break;
-            }
-            // Double Hashing
-            case 1:{
-                int index = getDoubleHash(num, this->size);
-                temp[index][0] = num;
-                break;
-            }
-            // Separate Chaining
-            case 2:{
-                int index = getHash(num, this->size);
-                temp[index].push_back(num);
-                break;
-            }
-        }
-    }
-    // There is no collision, so insert at index
-    else{
-        temp[index][0] = num;
-    }
-    return temp;
 }
 
 // Small method to return the hash of the size of the vector
@@ -72,16 +38,39 @@ int HashTable::getHash(int value, int size){
 // h1(k) = k % table_size
 // h2(k) = k^2 % TABLE_PRIME
 // dbl_hash = (h1 + (#_collisions + h2)) % table_size
-int HashTable::getDoubleHash(int value, int size){
-    return ((getHash(value, size) + 
-    (this->collisions + ((value * value) % get_table_prime()))) 
-    % this->size);
+void HashTable::doubleHash(int value){
+    if((this->amountFilled * 1.0) / this->table.size() >= 0.7){
+        resize_table();
+    }
+
+    // find original index to work with
+    int localCollisions = 0;
+    int index = getDoubleHash(value, localCollisions);
+
+    // Collision
+    if(this->table[index][0] != 0){
+        while(this->table[index][0] != 0){
+            this->collisions++;
+            localCollisions++;
+            index = getDoubleHash(value, localCollisions);
+        }
+    }
+    this->table[index][0] = value;
 }
+
+// Method to find the index that is available using double hashing
+int HashTable::getDoubleHash(int value, int localCollisions){
+    int h1 = getHash(value, this->table.size());
+    int h2 = (value * value) % get_table_prime();
+    int index = (h1 + (localCollisions + h2)) % this->table.size();
+    return index;
+}
+
 
 // Returns the highest prime number less than the size
 int HashTable::get_table_prime(){
-    int prime = 0;
-    for(int i = this->size; i > 0; i--){
+    int prime = -1;
+    for(int i = this->table.size() - 1; i > 0; i--){
         bool isPrime = true;
         for(int j = 2; j < i; j++){
             if(i % j == 0){
@@ -98,79 +87,62 @@ int HashTable::get_table_prime(){
 }
 
 // Helper method to handle insertion collision by using linear probe
-vector<vector<int>> HashTable::linearProbe(int value, int index, vector<vector<int>> temp){
-    int original = index;
-    do{
-        if(index == temp.size()){
-            index = 0;
-            continue;
-        }
-        // Thix index is empty so insert here
-        if(temp[index][0] == 0){
-            temp[index][0] = value;
-            return temp;
-        }
-        // Increment the index by 1;
-        index++;
+void HashTable::linearProbe(int value){
+    if((this->amountFilled * 1.0) / this->table.size() >= 0.7){
+        resize_table();
     }
-    while(index != original);
 
-    return temp;
+    int index = getHash(value, this->table.size());
+    while(this->table[index][0] != 0){
+        this->collisions++;
+        index = (index + 1) % this->table.size();
+    }
+    this->table[index][0] = value;
+}
+
+void HashTable::chaining(int value){
+    if((this->amountFilled * 1.0) / this->table.size() >= 0.7){
+        resize_table();
+    }
+    
+    int index = getHash(value, this->table.size());
+    if(this->table[index][0] != 0){
+        this->collisions++;
+        this->table[index].push_back(value);
+    }
+    else{
+        this->table[index][0] = value;
+    }
 }
 
 // Public Methods
 void HashTable::insert(int num){
-    // Check if there is a collision
-    int index = getHash(num, this->size);
-    if(this->table[index][0] != 0){
-        this->collisions++; 
-    }
-    
-    bool resized = false;
-    // If the table is 70% or more full
-    if((this->amountFilled * 1.0) / this->size >= 0.7){
-        this->table = resize_table();
-        resized = true;
-    }
-
-    index = getHash(num, this->size);
-    // We have a collision
-    if(this->table[index][0] != 0){
-        if(resized){
-            this->collisions++;
+    int index = getHash(num, this->table.size());
+    // Increment the number of collisions
+    switch(this->mode){
+        // Linear Probing
+        case 0:{
+            linearProbe(num);
+            break;
         }
-        // Increment the number of collisions
-        switch(this->mode){
-            // Linear Probing
-            case 0:{
-                this->table = linearProbe(num, index, this->table);
-                break;
-            }
-            // Double Hashing
-            case 1:{
-                int index = getDoubleHash(num, this->size);
-                this->table[index][0] = num;
-                break;
-            }
-            // Separate Chaining
-            case 2:{
-                int index = getHash(num, this->size);
-                this->table[index].push_back(num);
-                this->collisions--;
-                break;
-            }
+        // Double Hashing
+        case 1:{
+            doubleHash(num);
+            break;
+        }
+        // Separate Chaining
+        case 2:{
+            chaining(num);
+            break;
         }
     }
     // There is no collision, so insert at index
-    else{
-        this->table[index][0] = num;
-    }
     this->amountFilled++;
 }
 
 void HashTable::print_table(){
     if(this->mode != 2){
-        for(int i = 0; i < this->size; i++){
+        for(int i = 0; i < this->table.size(); i++){
             string valOutput;
             for(int value : this->table[i]){
                 valOutput += to_string(value) + " ";
@@ -181,7 +153,7 @@ void HashTable::print_table(){
         
     }
     else{
-        for(int i = 0; i < this->size; i++){
+        for(int i = 0; i < this->table.size(); i++){
             string valOutput;
             for(int value : this->table[i]){
                 valOutput += to_string(value) + " ";
