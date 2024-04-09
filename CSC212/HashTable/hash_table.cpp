@@ -108,7 +108,7 @@ void HashTable::chaining(int value){
     int index = getHash(value, this->table.size());
     if(this->table[index][0] != 0){
         this->collisions++;
-        this->table[index].push_back(value);
+        this->table[index].insert(this->table[index].begin(), value);
     }
     else{
         this->table[index][0] = value;
