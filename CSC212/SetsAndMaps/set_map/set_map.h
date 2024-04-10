@@ -8,8 +8,3 @@
 
 using namespace std;
 
-class NestedMap{
-    private:
-    public:
-};
-

@@ -2,7 +2,14 @@
 
 
 
-
+string getCurrCol(istringstream *ss, string sLine){
+    bool closed = false;
+    string currCol;
+    while((*ss).peek() != '"'){
+        currCol += (*ss).get();
+    }
+    return currCol;
+}
 
 int main(int argc, char* argv[]){
     // Arguments are <dataset> <command_list>
@@ -17,55 +24,53 @@ int main(int argc, char* argv[]){
 
     // Read from a file
     ifstream readData(dataSet);
-    string line, sLine, sLine2;
+    string currLine, sLine;
     // Skip over the first line
-    getline(readData, line);
-    while(getline(readData, line)){
-        istringstream ssLine(line);
-        // skip to the 4th value (country)
-        for(int i = 0; i <= 3; i++){
-            getline(ssLine, sLine, ',');
-        }
-        // If the country has a split, read the second part and combine
-        if(sLine[0] == '"'){
-            string doubleCountry;
-            getline(ssLine, sLine2, ',');
-            for(int i = 1; i < sLine.size(); i++){
-                doubleCountry += sLine[i];
+    getline(readData, currLine);
+    while(getline(readData, currLine)){
+        // cout << "Next line" << endl;
+        istringstream ss(currLine);
+        int col = 0;
+        string country;
+        while(getline(ss, sLine, ',')){
+            col++;
+            if(ss.peek() == '"'){
+                ss.get();
+                country = getCurrCol(&ss, sLine);
+                if(col == 3){
+                    countrySet.insert(country);
+                    break;
+                }
             }
-            doubleCountry += ", ";
-            for(int i = 1; i < sLine2.size() - 1; i++){
-                doubleCountry += sLine2[i];
+            else if(col == 4){
+                countrySet.insert(sLine);
+                break;
             }
-            countrySet.insert(doubleCountry);
-            continue;
         }
-        // insert the country to the set
-        countrySet.insert(sLine);
     }
     // Close the dataset reading
     readData.close();
 
     // Open the commands file
     ifstream commands(commandList);
-    while(getline(commands, line)){
-        istringstream ssLine(line);
+    while(getline(commands, sLine)){
+        istringstream ssLine(sLine);
         getline(ssLine, sLine, ' ');
         // Get the set or map
         if(sLine == "set"){
-            getline(ssLine, sLine, ' ');
+            getline(ssLine, sLine, '\n');
             countrySet.find(sLine) != countrySet.end() ? cout << 1 << endl : cout << 0 << endl;
         }
         else if(sLine == "map"){
             getline(ssLine, sLine, ' ');
             cout << 0 << endl;
-        }
-        
+        } 
     }
 
 
+    cout << endl << "Set" << endl;
     // Print every value in the set
     for(set<string>::iterator mySet = countrySet.begin(); mySet != countrySet.end(); mySet++){
-        cout << *mySet << ";";
+        cout << *mySet << endl;
     }
 }
