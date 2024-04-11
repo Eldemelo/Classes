@@ -92,6 +92,8 @@ int main(int argc, char* argv[]){
     readMapData.close();
 
 //MARK: NESTED MAP
+
+
     // Re-open file for maps
     ifstream readNestedData(dataSet);
     // Skip over the first line
@@ -101,6 +103,7 @@ int main(int argc, char* argv[]){
         int col = 0;
         string country;
         string saveCountry;
+        string saveState = "";
         while(getline(ss, sLine, ',')){
             col++;
             if(ss.peek() == '"'){
@@ -108,16 +111,24 @@ int main(int argc, char* argv[]){
                 col++;
                 country = getCurrCol(&ss, sLine);
                 getline(ss, sLine, ',');
-                if(col == 4){
+                if(col == 3){
+                    saveState = country;
+                }
+                else if(col == 4){
                     // Save the country for future parsing
                     saveCountry = country;
                 }
+            }
+            else if(col == 3){
+                saveState = sLine;
             }
             else if(col == 4){
                 // Check if it has an asterick
                 saveCountry = sLine;
             }
             else if(col == 8){
+                
+
                 // If the country already exists
                 if(countryMap.find(saveCountry) != countryMap.end()){
                     countryMap[saveCountry] += stoi(sLine);
