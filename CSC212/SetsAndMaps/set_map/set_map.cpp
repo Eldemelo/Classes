@@ -20,8 +20,9 @@ int main(int argc, char* argv[]){
     set<string> countrySet;
     // map<dataTypeForKey, dataTypeForValue> name;
     map<string, int> countryMap;
-    map<string, map<string, string>> nestedMap;
+    map<string, map<string, int>> nestedMap;
 
+//MARK: SET
     // Read from a file
     ifstream readData(dataSet);
     string currLine, sLine;
@@ -51,12 +52,12 @@ int main(int argc, char* argv[]){
     // Close the dataset reading
     readData.close();
 
+//MARK: SINGLE MAP
     // Re-open file for maps
     ifstream readMapData(dataSet);
     // Skip over the first line
     getline(readMapData, currLine);
     while(getline(readMapData, currLine)){
-        // cout << "Next line" << endl;
         istringstream ss(currLine);
         int col = 0;
         string country;
@@ -65,29 +66,74 @@ int main(int argc, char* argv[]){
             col++;
             if(ss.peek() == '"'){
                 ss.get();
+                col++;
                 country = getCurrCol(&ss, sLine);
-                if(col == 3){
+                getline(ss, sLine, ',');
+                if(col == 4){
                     // Save the country for future parsing
                     saveCountry = country;
                 }
             }
             else if(col == 4){
+                // Check if it has an asterick
                 saveCountry = sLine;
             }
             else if(col == 8){
                 // If the country already exists
                 if(countryMap.find(saveCountry) != countryMap.end()){
-                    // cout << "hello" << endl;
                     countryMap[saveCountry] += stoi(sLine);
                 }
                 else{
-                    // cout << "Does not exist: " << saveCountry << " " << sLine << endl;
                     countryMap.insert({saveCountry, stoi(sLine)});
                 }
             }
         }
     }
     readMapData.close();
+
+//MARK: NESTED MAP
+    // Re-open file for maps
+    ifstream readNestedData(dataSet);
+    // Skip over the first line
+    getline(readNestedData, currLine);
+    while(getline(readNestedData, currLine)){
+        istringstream ss(currLine);
+        int col = 0;
+        string country;
+        string saveCountry;
+        while(getline(ss, sLine, ',')){
+            col++;
+            if(ss.peek() == '"'){
+                ss.get();
+                col++;
+                country = getCurrCol(&ss, sLine);
+                getline(ss, sLine, ',');
+                if(col == 4){
+                    // Save the country for future parsing
+                    saveCountry = country;
+                }
+            }
+            else if(col == 4){
+                // Check if it has an asterick
+                saveCountry = sLine;
+            }
+            else if(col == 8){
+                // If the country already exists
+                if(countryMap.find(saveCountry) != countryMap.end()){
+                    countryMap[saveCountry] += stoi(sLine);
+                }
+                else{
+                    countryMap.insert({saveCountry, stoi(sLine)});
+                }
+            }
+        }
+    }
+    readNestedData.close();
+
+    // Push all values from the set to the map
+    for(set<string>::iterator mySet = countrySet.begin(); mySet != countrySet.end(); mySet++){
+        countryMap.insert({*mySet, 0});
+    }
 
     // Open the commands file
     ifstream commands(commandList);
@@ -100,9 +146,21 @@ int main(int argc, char* argv[]){
             countrySet.find(sLine) != countrySet.end() ? cout << 1 << endl : cout << 0 << endl;
         }
         else if(sLine == "map"){
-            // Determine if the map contains a semi-colon
             getline(ssLine, sLine, '\n');
-            cout << countryMap[sLine] << endl;
+            // Determine if the map contains a semi-colon
+            bool semicolon = false;
+            for(int i = 0; i < sLine.size(); i++){
+                if(sLine[i] == ';') semicolon = true;
+            }
+            // State type
+            if(semicolon){
+
+            }
+            // Non-state type
+            else{
+                countryMap.find(sLine) != countryMap.end() ?
+                cout << countryMap[sLine] << endl : cout << -1 << endl;
+            }
         } 
     }
 
