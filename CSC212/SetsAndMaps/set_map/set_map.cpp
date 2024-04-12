@@ -103,7 +103,7 @@ int main(int argc, char* argv[]){
         int col = 0;
         string country;
         string saveCountry;
-        string saveState = "";
+        string saveState;
         while(getline(ss, sLine, ',')){
             col++;
             if(ss.peek() == '"'){
@@ -127,24 +127,27 @@ int main(int argc, char* argv[]){
                 saveCountry = sLine;
             }
             else if(col == 8){
-                
-
-                // If the country already exists
-                if(countryMap.find(saveCountry) != countryMap.end()){
-                    countryMap[saveCountry] += stoi(sLine);
+                if(saveState == ""){
+                    saveState = saveCountry;
+                }    
+                // If the outer map has the country already
+                if(nestedMap.find(saveCountry) != nestedMap.end()){
+                    // If the state exists
+                    if(nestedMap[saveCountry].find(saveState) != nestedMap[saveCountry].end()){
+                        nestedMap[saveCountry][saveState] += stoi(sLine);
+                    }
+                    else{
+                        nestedMap[saveCountry].insert({saveState, stoi(sLine)});
+                    }
                 }
                 else{
-                    countryMap.insert({saveCountry, stoi(sLine)});
+                    map<string, int> temp({{saveState, stoi(sLine)}});
+                    nestedMap.insert({saveCountry, temp});    
                 }
             }
         }
     }
     readNestedData.close();
-
-    // Push all values from the set to the map
-    for(set<string>::iterator mySet = countrySet.begin(); mySet != countrySet.end(); mySet++){
-        countryMap.insert({*mySet, 0});
-    }
 
     // Open the commands file
     ifstream commands(commandList);
@@ -163,11 +166,21 @@ int main(int argc, char* argv[]){
             for(int i = 0; i < sLine.size(); i++){
                 if(sLine[i] == ';') semicolon = true;
             }
-            // State type
+            // Nested Map type
             if(semicolon){
-
+                istringstream command(sLine);
+                string country, state;
+                getline(command, country, ';');
+                getline(command, state, '\n');
+                if(nestedMap.find(country) != nestedMap.end()){
+                    if(nestedMap[country].find(state) != nestedMap[country].end()){
+                        cout << nestedMap[country][state] << endl;
+                        continue;
+                    }
+                }
+                cout << -1 << endl;
             }
-            // Non-state type
+            // Non-Nested Map Type
             else{
                 countryMap.find(sLine) != countryMap.end() ?
                 cout << countryMap[sLine] << endl : cout << -1 << endl;
