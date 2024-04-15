@@ -1,5 +1,9 @@
 #include "adjacency_matrix.h"
 
+AdjMatrix::AdjMatrix(){
+    
+}
+
 AdjMatrix::AdjMatrix(string ifname){
     ifstream inFile(ifname);
     string line;

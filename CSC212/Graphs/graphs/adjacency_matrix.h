@@ -11,6 +11,7 @@ class AdjMatrix{
         int col = 0;
         vector<vector<int>> matrix;
     public:
+    AdjMatrix();
     AdjMatrix(string ifname);
     void addEdge(int source, int dest, int weight);
     void printGraph();
