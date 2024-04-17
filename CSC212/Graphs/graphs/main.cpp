@@ -1,16 +1,15 @@
 #include "adjacency_matrix.h"
 #include "adjacency_list.h"
+#include <sstream>
 
-using namespace std;
-
-void adjacency_matrix(string ifname);
-void adjacency_list(int mode, string ifname);
+void adjacency_matrix(std::string ifname);
+void adjacency_list(int mode, std::string ifname);
 
 // Mode
 // 0: Adjacency Matrix
 // 1: Adjacency List
 int main(int argc, char* argv[]){
-    int mode = stoi(argv[2]);
+    int mode = std::stoi(argv[2]);
 
     if(mode == 0){
         adjacency_matrix(argv[1]);
@@ -19,44 +18,42 @@ int main(int argc, char* argv[]){
     }
 }
 
-void adjacency_matrix(string ifname){
+void adjacency_matrix(std::string ifname){
     AdjMatrix mat;
-    ifstream ifs(ifname);
-    string ofname = ifname.substr(0, ifname.rfind('.')) + "_output_0.dot";
+    std::ifstream ifs(ifname);
+    std::string ofname = ifname.substr(0, ifname.rfind('.')) + "_output_0.dot";
 
-    string line;
+    std::string line;
 
     int source;
     int dest;
     int weight;
 
-    while(getline(ifs, line)){
-        stringstream ss(line);
+    while(std::getline(ifs, line)){
+        std::stringstream ss(line);
         ss >> source >> dest >> weight;
-        cout << "Inserting edge at " << source << dest << endl;
         mat.addEdge(source, dest, weight);
     }
-    cout << "Print graph" << endl;
+
     mat.printGraph();
-    cout << "Output Graph" << endl;
     mat.outputGraph(ofname);
 }
 
-void adjacency_list(int mode, string ifname){
+void adjacency_list(int mode, std::string ifname){
     AdjList lst;
-    ifstream ifs(ifname);
-    string ofname = ifname.substr(0, ifname.rfind('.')) + "_output_" + to_string(mode) + ".dot";
-    string line;
+    std::ifstream ifs(ifname);
+    std::string ofname = ifname.substr(0, ifname.rfind('.')) + "_output_" + std::to_string(mode) + ".dot";
+    std::string line;
 
-    cout << ifname << endl;
-    cout << ofname << endl;
+    std::cout << ifname << std::endl;
+    std::cout << ofname << std::endl;
 
     int source;
     int dest;
     int weight;
 
-    while(getline(ifs, line)){
-        stringstream ss(line);
+    while(std::getline(ifs, line)){
+        std::stringstream ss(line);
         ss >> source >> dest >> weight;
         lst.addEdge(source, dest, weight);
 

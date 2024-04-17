@@ -6,19 +6,21 @@ AdjMatrix::AdjMatrix(){
 
 void AdjMatrix::addEdge(int source, int dest, int weight){
     // Check if the starting node does not exist
-    if(!(source < matrix.size())){
-        for(int i = matrix.size() - 1; i < dest; i++){
+    if(!(source < this->matrix.size())){
+        // cout << "New Row" << endl;
+        for(int i = this->matrix.size(); i < dest; i++){
             vector<int> temp(this->col, 0);
-            matrix.push_back(temp);
+            this->matrix.push_back(temp);
             this->row++;
         }
     }
     // The starting node now exists
     // If the destination node doesn't exist
-    if(!(dest < matrix[source].size())){
-        for(int i = matrix[source].size() - 1; i < dest; i++){
+    if(!(dest < this->matrix[source].size())){
+        // cout << "New Col" << endl;
+        for(int i = this->matrix[source].size() - 1; i < dest; i++){
             // cout << "New column at row " << source << endl;
-            matrix[source].push_back(0);
+            this->matrix[source].push_back(0);
             this->col++;
         }
     }
@@ -33,6 +35,15 @@ void AdjMatrix::addEdge(int source, int dest, int weight){
             }
         }
     }
+    // Update to have same dimensions
+    if(this->matrix.size() < this->col){
+        // cout << "Update dimensions" << endl;
+        vector<int> temp(this->col, 0);
+        this->matrix.push_back(temp);
+    }
+
+    // printGraph();
+    // cout << endl;
 }
 
 void AdjMatrix::printGraph(){
@@ -46,11 +57,18 @@ void AdjMatrix::printGraph(){
 
 void AdjMatrix::outputGraph(string ofname){
     ofstream os(ofname);
-    for(vector<int> col : this->matrix){
-        for(int i = 0; i < col.size(); i++){
-            os << col[i] << " ";
+
+    os << "digraph G {" << endl << endl;
+    for(int i = 0; i < this->matrix.size(); i++){
+        vector<int> col = this->matrix[i];
+        for(int j = 0; j < col.size(); j++){
+            if(col[j] != 0){
+                os << "  " << i << " -> " << j << " [label=\"" << col[j] << "\"];" << endl;
+            }
         }
-        os << endl;
     }
+    os << endl;
+    os << "}";
+
     os.close();
 }
