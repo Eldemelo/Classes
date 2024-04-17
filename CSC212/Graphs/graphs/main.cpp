@@ -33,10 +33,12 @@ void adjacency_matrix(string ifname){
     while(getline(ifs, line)){
         stringstream ss(line);
         ss >> source >> dest >> weight;
+        cout << "Inserting edge at " << source << dest << endl;
         mat.addEdge(source, dest, weight);
     }
-
+    cout << "Print graph" << endl;
     mat.printGraph();
+    cout << "Output Graph" << endl;
     mat.outputGraph(ofname);
 }
 

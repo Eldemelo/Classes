@@ -4,44 +4,53 @@ AdjMatrix::AdjMatrix(){
     
 }
 
-AdjMatrix::AdjMatrix(string ifname){
-    ifstream inFile(ifname);
-    string line;
-    // While there are lines to read
-    while(getline(inFile, line)){
-        int start, end, weight;
-        istringstream ss(line);
-        ss >> start;
-        ss >> end;
-        ss >> weight;
-        // Check if the starting node does not exist
-        if(!(start <= matrix.size() - 1)){
-            vector<int> temp(1, 0);
-            this->matrix.push_back(temp);
+void AdjMatrix::addEdge(int source, int dest, int weight){
+    // Check if the starting node does not exist
+    if(!(source < matrix.size())){
+        for(int i = matrix.size() - 1; i < dest; i++){
+            vector<int> temp(this->col, 0);
+            matrix.push_back(temp);
             this->row++;
         }
-        // The starting node now exists
-        // If the destination node doesn't exist
-        if(!(end > matrix[start].size() - 1)){
-            for(int i = matrix[start].size() - 1; i < end; i++){
-                matrix[start].push_back(0);
-                this->col++;
+    }
+    // The starting node now exists
+    // If the destination node doesn't exist
+    if(!(dest < matrix[source].size())){
+        for(int i = matrix[source].size() - 1; i < dest; i++){
+            // cout << "New column at row " << source << endl;
+            matrix[source].push_back(0);
+            this->col++;
+        }
+    }
+    // Now the destination node exists
+    this->matrix[source][dest] = weight;
+
+    // Update all rows to have the column count
+    for(vector<int>& col : this->matrix){
+        if(col.size() < this->col){
+            for(int i = col.size(); i < this->col; i++){
+                col.push_back(0);
             }
         }
-        // Now the destination node exists
-        matrix[start][end] = weight;
     }
-    // Update all rows to have the column count
-}
-
-void AdjMatrix::addEdge(int source, int dest, int weight){
-    
 }
 
 void AdjMatrix::printGraph(){
-
+    for(vector<int> col : this->matrix){
+        for(int i = 0; i < col.size(); i++){
+            cout << col[i] << " ";
+        }
+        cout << endl;
+    }
 }
 
 void AdjMatrix::outputGraph(string ofname){
-
+    ofstream os(ofname);
+    for(vector<int> col : this->matrix){
+        for(int i = 0; i < col.size(); i++){
+            os << col[i] << " ";
+        }
+        os << endl;
+    }
+    os.close();
 }
