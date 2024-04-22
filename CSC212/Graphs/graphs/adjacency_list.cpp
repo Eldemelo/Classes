@@ -100,7 +100,7 @@ void AdjList::dfs(int startNode, ofstream &os, int depth = 0) {
     for(pair<int, int> curr : lst[startNode]){
         // Print the node
         (os) << "  " << startNode << " -> " << curr.first << " [label=\"" << curr.second << "\"]";
-        (os) << "[color=\"" << colors[edge % 4] << "\"];" << endl;
+        (os) << "[color=\"" << colors[edge] << "\"];" << endl;
 
         // Navigate down if not visited
         if (!visited[curr.first]){
