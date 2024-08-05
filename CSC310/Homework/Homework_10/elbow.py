@@ -1,10 +1,10 @@
 # inspired by the source code from
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+import numpy as np
+from scipy.spatial.distance import cdist, pdist
 # www.slideshare.net/SarahGuido/kmeans-clustering-with-scikitlearn
 def plot_elbow(df, n=10):
-    import matplotlib.pyplot as plt
-    from sklearn.cluster import KMeans
-    import numpy as np
-    from scipy.spatial.distance import cdist, pdist
     
     # kmeans models for each k
     kMeansVar = [KMeans(n_clusters=k).fit(df.values) for k in range(1, n+1)]
