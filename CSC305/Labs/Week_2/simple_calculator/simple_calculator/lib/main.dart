@@ -10,7 +10,7 @@ class CalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GitHub Copilot Calculator',
+      title: 'Ethan\'s Calculator',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -77,7 +77,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GitHub Copilot Calculator'),
+        title: Text('Ethan\'s Calculator'),
       ),
       body: Column(
         children: <Widget>[
