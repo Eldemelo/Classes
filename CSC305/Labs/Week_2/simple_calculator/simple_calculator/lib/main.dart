@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expressions/expressions.dart';
+import 'dart:math';
 
 void main() {
   runApp(CalculatorApp());
@@ -9,7 +10,7 @@ class CalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ethan\'s Calculator',
+      title: 'GitHub Copilot Calculator',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -33,14 +34,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _expression = '';
         _controller.clear();
       } else if (value == '=') {
-        try {
-          final expression = Expression.parse(_expression);
-          final evaluator = const ExpressionEvaluator();
-          final result = evaluator.eval(expression, {});
-          _controller.text = '$_expression = $result';
-        } catch (e) {
-          _controller.text = 'Error';
-        }
+        _calculate();
+      } else if (value == '^2') {
+        _expression += '^2';
+        _controller.text = _expression;
       } else {
         _expression += value;
         _controller.text = _expression;
@@ -48,11 +45,39 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
 
+  void _calculate() {
+    try {
+      String modifiedExpression = _expression.replaceAllMapped(
+        RegExp(r'(\d+)\^2'),
+        (match) => 'pow(${match.group(1)}, 2)',
+      );
+
+      // Custom evaluator for pow function
+      final evaluator = const ExpressionEvaluator();
+      final context = {
+        'pow': (num base, num exponent) => pow(base, exponent),
+      };
+
+      final expression = Expression.parse(modifiedExpression);
+      final result = evaluator.eval(expression, context);
+      _controller.text = '$_expression = $result';
+    } catch (e) {
+      _controller.text = 'Error';
+    }
+  }
+
+  void _clear() {
+    setState(() {
+      _expression = '';
+      _controller.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ethan\'s Calculator'),
+        title: Text('GitHub Copilot Calculator'),
       ),
       body: Column(
         children: <Widget>[
@@ -89,6 +114,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 '0',
                 '=',
                 '+',
+                '^2',
+                '%'
               ].map((value) {
                 return GridTile(
                   child: ElevatedButton(
