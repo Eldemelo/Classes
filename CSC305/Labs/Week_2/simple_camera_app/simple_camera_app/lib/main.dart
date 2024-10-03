@@ -16,7 +16,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final CameraDescription camera;
 
-  MyApp({required this.camera});
+  const MyApp({super.key, required this.camera});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
 
-  CameraScreen({required this.camera});
+  const CameraScreen({super.key, required this.camera});
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -39,7 +39,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  List<String> _imagePaths = [];
+  final List<String> _imagePaths = [];
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Camera App')),
+      appBar: AppBar(title: const Text('Camera App')),
       body: Column(
         children: [
           Expanded(
@@ -86,18 +86,18 @@ class _CameraScreenState extends State<CameraScreen> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return CameraPreview(_controller);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),
           ),
           ElevatedButton(
             onPressed: _takePicture,
-            child: Icon(Icons.camera),
+            child: const Icon(Icons.camera),
           ),
           Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
               ),
               itemCount: _imagePaths.length,
