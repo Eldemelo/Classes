@@ -1,0 +1,5 @@
+// DO NOT MODIFY
+// This should print 3
+
+int i = 3;
+put i;

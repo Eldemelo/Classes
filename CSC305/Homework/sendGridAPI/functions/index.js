@@ -1,10 +1,7 @@
 const functions = require("firebase-functions");
 const sgMail = require("@sendgrid/mail");
 
-let SENDGRID_API_KEY = "";
-sgMail.setApiKey(SENDGRID_API_KEY);
-
-exports.sendEmailToUser = functions.https.onRequest((request, response) => {
+let SENDGRID_API_KEY = "((request, response) => {
     const msg = {
         to: request.body.to,
         from: "ethan.demelo@uri.edu",
