@@ -1,0 +1,4 @@
+// DO NOT MODIFY
+// This program should fail
+
+put "Value: " + 1.1;

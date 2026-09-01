@@ -1,0 +1,4 @@
+// DO NOT MODIFY
+// This program should print the value: 2.2
+
+put 1.1 + tofloat("1.1");

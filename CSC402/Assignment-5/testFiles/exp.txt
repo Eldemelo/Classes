@@ -1,0 +1,5 @@
+// DO NOT MODIFY
+// This program should fail
+
+float p = 3.4 + 1;
+put p;

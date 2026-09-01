@@ -1,0 +1,5 @@
+// DO NOT MODIFY
+// This program should print out 4
+
+int p = toint(3.4) + 1;
+put p;

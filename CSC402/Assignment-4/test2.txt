@@ -1,0 +1,14 @@
+////// DO NOT MODIFY //////
+
+
+declare inc(x) {
+     return x+step;
+}
+
+declare foo(x) {
+  declare step = 1;
+  return inc(x);
+}
+
+put foo(1);
+

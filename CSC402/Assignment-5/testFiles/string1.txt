@@ -1,0 +1,5 @@
+// DO NOT MODIFY
+// This program should print out: 
+//     Value: 1.1
+
+put "Value: " + tostring(1.1);
