@@ -1,0 +1,75 @@
+{
+  "test001": {
+    "description": "Test to ensure the snake cannot double back on itself as well as ensuring that hitting the wall ends the game",
+    "seed": "0",
+    "snake_grows": "1",
+    "key_input": "RRRRDDDDUUU",
+    "output": {
+      "game_over": 1,
+      "score": 1,
+      "width": 20,
+      "height": 10,
+      "cells": [
+        "XXXXXXXXXXXXXXXXXXXX",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X.....S............X",
+        "X.....S..........O.X",
+        "XXXXXXXXXXXXXXXXXXXX"
+      ]
+    }
+  },
+  "test002": {
+    "description": "<Check to ensure we can hit ourselves>",
+    "seed": "0",
+    "snake_grows": "1",
+    "key_input": "RRRRDDDDDDRRRRRRRRRRRUUULLDRU",
+    "output": {
+      "game_over": 1,
+      "score": 4,
+      "width": 20,
+      "height": 10,
+      "cells": [
+        "XXXXXXXXXXXXXXXXXXXX",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X...........O......X",
+        "X..............SSS.X",
+        "X..............SS..X",
+        "X..................X",
+        "X..................X",
+        "XXXXXXXXXXXXXXXXXXXX"
+      ]
+    }
+  },
+  "test003": {
+    "description": "Make sure we don't grow if we eat and grow is set to 0",
+    "seed": "0",
+    "snake_grows": "0",
+    "key_input": "RRRRDDDD",
+    "output": {
+      "game_over": 0,
+      "score": 1,
+      "width": 20,
+      "height": 10,
+      "cells": [
+        "XXXXXXXXXXXXXXXXXXXX",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X..................X",
+        "X.....S............X",
+        "X..................X",
+        "X................O.X",
+        "XXXXXXXXXXXXXXXXXXXX"
+      ]
+    }
+  }
+}
+

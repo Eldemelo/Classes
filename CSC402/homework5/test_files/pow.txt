@@ -1,0 +1,11 @@
+// DO NOT MODIFY THIS PROGRAM
+// This program should fail
+
+float pow(float b,int e) {
+   if (e == 0)
+      return 1.0;
+   else
+      return b*pow(b,e-1);
+}
+
+put pow(3,2);

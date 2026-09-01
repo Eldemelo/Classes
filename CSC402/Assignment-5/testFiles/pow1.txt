@@ -1,0 +1,10 @@
+// DO NOT MODIFY THIS PROGRAM
+
+float pow(float b,int e) {
+   if (e == 0)
+      return 1.0;
+   else
+      return b*pow(b,e-1);
+}
+
+put pow(tofloat(3),2);

@@ -1,0 +1,5 @@
+// DO NOT MODIFY
+// This program should print out 4.4
+
+float p = 3.4 + tofloat(1);
+put p;

@@ -1,0 +1,9 @@
+	input x ;
+L0:
+	jumpf =< 1 x L1 ;
+	print x ;
+	store x - x 1 ;
+	jump L0 ;
+L1:
+	noop ;
+	stop ;
